@@ -86,12 +86,168 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/command.js":
+/*!************************!*\
+  !*** ./src/command.js ***!
+  \************************/
+/*! exports provided: Command */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Command", function() { return Command; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Command = /*#__PURE__*/function () {
+  function Command(pathStyle) {
+    _classCallCheck(this, Command);
+
+    this.threshhold = 10;
+    this.canvas = canvas;
+    this.directions = [];
+    this.isMouseDown = false;
+    this.lineWidth = pathStyle.lineWidth || 5;
+    this.strokeStyle = pathStyle.strokeStyle || "red";
+    this.addInputListener();
+  }
+
+  _createClass(Command, [{
+    key: "addInputListener",
+    value: function addInputListener() {
+      var _this = this;
+
+      document.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+
+        _this.handleMouseDown(e);
+      });
+      document.addEventListener("mousemove", function (e) {
+        e.preventDefault();
+
+        _this.handleMouseMove(e);
+      });
+      document.addEventListener("mouseup", function (e) {
+        e.preventDefault();
+
+        _this.handleMouseUp(e);
+      });
+    }
+  }, {
+    key: "handleMouseDown",
+    value: function handleMouseDown(e) {
+      this.isMouseDown = true;
+      this.tmpCanvas = document.createElement("canvas");
+      this.ctx = this.tmpCanvas.getContext("2d");
+      this.tmpCanvas.width = window.innerWidth || window.clientWidth;
+      this.tmpCanvas.height = window.innerHeight || window.clientHeight;
+      this.tmpCanvas.style = "position: fixed; left: 0; right: 0; top: 0; bottom: 0;";
+      document.body.appendChild(this.tmpCanvas);
+      var mousePos = this.calibrateInput(e, this.tmpCanvas);
+      this.xStart = mousePos.x;
+      this.yStart = mousePos.y;
+      this.xLast = mousePos.x;
+      this.yLast = mousePos.y; //starting position of visible path
+
+      this.ctx.moveTo(this.xStart, this.yStart);
+    }
+  }, {
+    key: "handleMouseMove",
+    value: function handleMouseMove(e) {
+      if (this.isMouseDown) {
+        var mousePos = this.calibrateInput(e, this.tmpCanvas);
+        this.xCurrent = mousePos.x;
+        this.yCurrent = mousePos.y;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.strokeStyle = this.strokeStyle;
+        this.ctx.lineTo(this.xCurrent, this.yCurrent);
+        this.ctx.stroke();
+        var dx, dy, direction;
+        dx = Math.abs(this.xCurrent - this.xLast);
+        dy = Math.abs(this.yCurrent - this.yLast);
+        if (dx < this.threshhold && dy < this.threshhold) return;
+
+        if (dx > dy) {
+          direction = this.xCurrent > this.xLast ? "R" : "L";
+        } else {
+          direction = this.yCurrent > this.yLast ? "D" : "U";
+        }
+
+        var lastDirection = this.directions[this.directions.length - 1];
+
+        if (lastDirection !== direction) {
+          this.directions.push(direction);
+        }
+
+        this.xLast = this.xCurrent;
+        this.yLast = this.yCurrent;
+      }
+    }
+  }, {
+    key: "handleMouseUp",
+    value: function handleMouseUp() {
+      if (this.directions.length !== 0) {
+        this.executeDirections();
+      }
+
+      this.isMouseDown = false;
+      this.directions = [];
+      document.body.removeChild(this.tmpCanvas);
+      this.tmpCanvas = null;
+    }
+  }, {
+    key: "calibrateInput",
+    value: function calibrateInput(e, canvas) {
+      var bound = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX - bound.left) / bound.width * canvas.width,
+        y: (e.clientY - bound.top) / bound.height * canvas.height
+      };
+    }
+  }, {
+    key: "executeDirections",
+    value: function executeDirections() {
+      switch (this.directions.join("")) {
+        case "R":
+          console.log("Right");
+          break;
+
+        case "L":
+          console.log("Left");
+          break;
+
+        case "U":
+          console.log("up");
+          break;
+
+        case "D":
+          console.log("down");
+          break;
+
+        default:
+          console.log(this.directions.join(""));
+      }
+    }
+  }]);
+
+  return Command;
+}();
+
+/***/ }),
+
 /***/ "./src/main.js":
 /*!*********************!*\
   !*** ./src/main.js ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./command */ "./src/command.js");
 
 document.addEventListener("DOMContentLoaded", function () {
   var canvas = document.getElementById("canvas");
@@ -99,6 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = bound.width;
   canvas.height = bound.height;
   var ctx = canvas.getContext("2d");
+  var command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas);
 });
 
 /***/ })
