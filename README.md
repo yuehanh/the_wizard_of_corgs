@@ -1,1 +1,1 @@
-# the_wizard_of_corgs
+# The Wizard of Corgs
