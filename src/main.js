@@ -1,4 +1,4 @@
-import { Command } from "./command";
+import { Game } from "./game";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
@@ -6,5 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   canvas.width = bound.width;
   canvas.height = bound.height;
   const ctx = canvas.getContext("2d");
-  const command = new Command(canvas);
+  const game = new Game();
+  game.start();
 });
