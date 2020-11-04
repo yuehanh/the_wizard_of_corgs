@@ -1,3 +1,5 @@
+import { vectorDirectionsInSymbol } from "./util";
+
 export class Command {
   constructor(pathStyle) {
     this.threshhold = 10;
@@ -58,19 +60,14 @@ export class Command {
       this.ctx.lineTo(this.xCurrent, this.yCurrent);
       this.ctx.stroke();
 
-      let dx, dy, direction;
+      const dx = this.xCurrent - this.xLast;
+      const dy = this.yCurrent - this.yLast;
 
-      dx = Math.abs(this.xCurrent - this.xLast);
-      dy = Math.abs(this.yCurrent - this.yLast);
+      if (Math.abs(dx) < this.threshhold && Math.abs(dy) < this.threshhold)
+        return;
 
-      if (dx < this.threshhold && dy < this.threshhold) return;
-
-      if (dx > dy) {
-        direction = this.xCurrent > this.xLast ? "R" : "L";
-      } else {
-        direction = this.yCurrent > this.yLast ? "D" : "U";
-      }
-
+      const direction = vectorDirectionsInSymbol(dx, dy);
+      console.log(direction);
       const lastDirection = this.directions[this.directions.length - 1];
 
       if (lastDirection !== direction) {
