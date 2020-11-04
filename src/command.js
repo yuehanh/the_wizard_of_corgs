@@ -7,6 +7,7 @@ export class Command {
 
     this.directions = [];
     this.isMouseDown = false;
+    this.tmpCanvas = null;
 
     this.lineWidth = pathStyle.lineWidth || 5;
     this.strokeStyle = pathStyle.strokeStyle || "red";
@@ -27,9 +28,19 @@ export class Command {
       e.preventDefault();
       this.handleMouseUp(e);
     });
+    this.canvas.oncontextmenu = function (e) {
+      e.preventDefault();
+    };
   }
 
   handleMouseDown(e) {
+    if (this.isMouseDown) {
+      if (this.tmpCanvas !== null) {
+        document.body.removeChild(this.tmpCanvas);
+        this.tmpCanvas = null;
+      }
+    }
+
     this.isMouseDown = true;
     this.tmpCanvas = document.createElement("canvas");
     this.ctx = this.tmpCanvas.getContext("2d");
@@ -67,7 +78,6 @@ export class Command {
         return;
 
       const direction = vectorDirectionsInSymbol(dx, dy);
-      console.log(direction);
       const lastDirection = this.directions[this.directions.length - 1];
 
       if (lastDirection !== direction) {
@@ -98,7 +108,7 @@ export class Command {
   }
 
   executeDirections() {
-    switch (this.directions.join("")) {
+    switch (this.directions.join()) {
       case "R":
         console.log("Right");
         break;
@@ -112,7 +122,7 @@ export class Command {
         console.log("down");
         break;
       default:
-        console.log(this.directions.join(""));
+        console.log(this.directions.join());
     }
   }
 }
