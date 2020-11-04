@@ -31,6 +31,19 @@ export class Command {
     this.canvas.oncontextmenu = function (e) {
       e.preventDefault();
     };
+
+    // document.addEventListener("touchstart", (e) => {
+    //   e.preventDefault();
+    //   this.handleMouseDown(e);
+    // });
+    // document.addEventListener("touchmove", (e) => {
+    //   e.preventDefault();
+    //   this.handleMouseMove(e);
+    // });
+    // document.addEventListener("touchend", (e) => {
+    //   e.preventDefault();
+    //   this.handleMouseUp(e);
+    // });
   }
 
   handleMouseDown(e) {
@@ -40,7 +53,6 @@ export class Command {
         this.tmpCanvas = null;
       }
     }
-
     this.isMouseDown = true;
     this.tmpCanvas = document.createElement("canvas");
     this.ctx = this.tmpCanvas.getContext("2d");
@@ -110,17 +122,13 @@ export class Command {
   executeDirections() {
     switch (this.directions.join()) {
       case "R":
-        console.log("Right");
-        break;
+        return "hBar";
       case "L":
-        console.log("Left");
-        break;
+        return "hBar";
       case "U":
-        console.log("up");
-        break;
+        return "vBar";
       case "D":
-        console.log("down");
-        break;
+        return "vBar";
       default:
         console.log(this.directions.join());
     }

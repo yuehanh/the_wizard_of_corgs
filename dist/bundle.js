@@ -112,6 +112,7 @@ var Command = /*#__PURE__*/function () {
     this.canvas = canvas;
     this.directions = [];
     this.isMouseDown = false;
+    this.tmpCanvas = null;
     this.lineWidth = pathStyle.lineWidth || 5;
     this.strokeStyle = pathStyle.strokeStyle || "red";
     this.addInputListener();
@@ -137,10 +138,33 @@ var Command = /*#__PURE__*/function () {
 
         _this.handleMouseUp(e);
       });
+
+      this.canvas.oncontextmenu = function (e) {
+        e.preventDefault();
+      }; // document.addEventListener("touchstart", (e) => {
+      //   e.preventDefault();
+      //   this.handleMouseDown(e);
+      // });
+      // document.addEventListener("touchmove", (e) => {
+      //   e.preventDefault();
+      //   this.handleMouseMove(e);
+      // });
+      // document.addEventListener("touchend", (e) => {
+      //   e.preventDefault();
+      //   this.handleMouseUp(e);
+      // });
+
     }
   }, {
     key: "handleMouseDown",
     value: function handleMouseDown(e) {
+      if (this.isMouseDown) {
+        if (this.tmpCanvas !== null) {
+          document.body.removeChild(this.tmpCanvas);
+          this.tmpCanvas = null;
+        }
+      }
+
       this.isMouseDown = true;
       this.tmpCanvas = document.createElement("canvas");
       this.ctx = this.tmpCanvas.getContext("2d");
@@ -171,7 +195,6 @@ var Command = /*#__PURE__*/function () {
         var dy = this.yCurrent - this.yLast;
         if (Math.abs(dx) < this.threshhold && Math.abs(dy) < this.threshhold) return;
         var direction = Object(_util__WEBPACK_IMPORTED_MODULE_0__["vectorDirectionsInSymbol"])(dx, dy);
-        console.log(direction);
         var lastDirection = this.directions[this.directions.length - 1];
 
         if (lastDirection !== direction) {
@@ -206,25 +229,21 @@ var Command = /*#__PURE__*/function () {
   }, {
     key: "executeDirections",
     value: function executeDirections() {
-      switch (this.directions.join("")) {
+      switch (this.directions.join()) {
         case "R":
-          console.log("Right");
-          break;
+          return "hBar";
 
         case "L":
-          console.log("Left");
-          break;
+          return "hBar";
 
         case "U":
-          console.log("up");
-          break;
+          return "vBar";
 
         case "D":
-          console.log("down");
-          break;
+          return "vBar";
 
         default:
-          console.log(this.directions.join(""));
+          console.log(this.directions.join());
       }
     }
   }]);
@@ -277,7 +296,7 @@ var vectorDirectionInDegree = function vectorDirectionInDegree(x, y) {
   return degree;
 };
 var vectorDirectionsInSymbol = function vectorDirectionsInSymbol(x, y) {
-  var THRESHOLD = 15;
+  var THRESHOLD = 20;
   var degree = vectorDirectionInDegree(x, y);
   console.log(degree);
 
