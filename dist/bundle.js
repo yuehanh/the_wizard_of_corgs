@@ -96,11 +96,13 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Command", function() { return Command; });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 var Command = /*#__PURE__*/function () {
   function Command(pathStyle) {
@@ -165,17 +167,11 @@ var Command = /*#__PURE__*/function () {
         this.ctx.strokeStyle = this.strokeStyle;
         this.ctx.lineTo(this.xCurrent, this.yCurrent);
         this.ctx.stroke();
-        var dx, dy, direction;
-        dx = Math.abs(this.xCurrent - this.xLast);
-        dy = Math.abs(this.yCurrent - this.yLast);
-        if (dx < this.threshhold && dy < this.threshhold) return;
-
-        if (dx > dy) {
-          direction = this.xCurrent > this.xLast ? "R" : "L";
-        } else {
-          direction = this.yCurrent > this.yLast ? "D" : "U";
-        }
-
+        var dx = this.xCurrent - this.xLast;
+        var dy = this.yCurrent - this.yLast;
+        if (Math.abs(dx) < this.threshhold && Math.abs(dy) < this.threshhold) return;
+        var direction = Object(_util__WEBPACK_IMPORTED_MODULE_0__["vectorDirectionsInSymbol"])(dx, dy);
+        console.log(direction);
         var lastDirection = this.directions[this.directions.length - 1];
 
         if (lastDirection !== direction) {
@@ -257,6 +253,65 @@ document.addEventListener("DOMContentLoaded", function () {
   var ctx = canvas.getContext("2d");
   var command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas);
 });
+
+/***/ }),
+
+/***/ "./src/util.js":
+/*!*********************!*\
+  !*** ./src/util.js ***!
+  \*********************/
+/*! exports provided: vectorDirectionInDegree, vectorDirectionsInSymbol */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "vectorDirectionInDegree", function() { return vectorDirectionInDegree; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "vectorDirectionsInSymbol", function() { return vectorDirectionsInSymbol; });
+var vectorDirectionInDegree = function vectorDirectionInDegree(x, y) {
+  var degree = Math.atan(y / x) * 180 / Math.PI;
+
+  if (x < 0) {
+    degree += 180;
+  }
+
+  return degree;
+};
+var vectorDirectionsInSymbol = function vectorDirectionsInSymbol(x, y) {
+  var THRESHOLD = 15;
+  var degree = vectorDirectionInDegree(x, y);
+  console.log(degree);
+
+  switch (true) {
+    case Math.abs(degree) < THRESHOLD:
+      return "R";
+
+    case Math.abs(degree - 180) < THRESHOLD:
+      return "L";
+    //revsered U and D since the 0,0 for canvas is at top left
+
+    case Math.abs(degree - 90) < THRESHOLD:
+      return "D";
+
+    case Math.abs(degree - 270) < THRESHOLD:
+    case Math.abs(degree + 90) < THRESHOLD:
+      return "U";
+
+    case degree < THRESHOLD && degree > THRESHOLD - 90:
+      return "URS";
+
+    case degree < 180 - THRESHOLD && degree > THRESHOLD + 90:
+      return "DLS";
+
+    case degree > 270 - THRESHOLD && degree > THRESHOLD + 180:
+      return "ULS";
+
+    case degree < 90 - THRESHOLD && degree > THRESHOLD:
+      return "DRS";
+
+    default:
+      return "not detected";
+  }
+};
 
 /***/ })
 
