@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const bound = canvas.getBoundingClientRect();
   canvas.width = bound.width;
   canvas.height = bound.height;
-  const ctx = canvas.getContext("2d");
-  const game = new Game(ctx);
+
+  const game = new Game(canvas);
   game.start();
 });
