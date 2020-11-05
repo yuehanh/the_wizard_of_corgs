@@ -1,10 +1,11 @@
+import { Enemy } from "./enemies";
 import { vectorDirectionsInSymbol } from "./util";
 
 export class Command {
-  constructor(pathStyle) {
+  constructor(canvas, game, pathStyle = {}) {
     this.threshhold = 10;
     this.canvas = canvas;
-
+    this.game = game;
     this.directions = [];
     this.isMouseDown = false;
     this.tmpCanvas = null;
@@ -103,7 +104,7 @@ export class Command {
 
   handleMouseUp() {
     if (this.directions.length !== 0) {
-      this.executeDirections();
+      this.execute();
     }
     this.isMouseDown = false;
     this.directions = [];
@@ -119,16 +120,24 @@ export class Command {
     };
   }
 
-  executeDirections() {
+  execute() {
+    this.game.receiveCommand(this.interpretDirections());
+  }
+
+  interpretDirections() {
     switch (this.directions.join()) {
       case "R":
-        return "hBar";
       case "L":
         return "hBar";
       case "U":
-        return "vBar";
       case "D":
         return "vBar";
+      case "URS":
+      case "DLS":
+        return "fSlash";
+      case "ULS":
+      case "DRS":
+        return "bSlash";
       default:
         console.log(this.directions.join());
     }
