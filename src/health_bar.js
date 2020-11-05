@@ -61,11 +61,11 @@ export class HealthBar {
   }
 
   drawFSlash(ctx, x, y) {
-    const xStart = x + this.SIZE;
+    const xStart = x + (this.SIZE * 3) / 4;
     const yStart = y;
     ctx.beginPath();
     ctx.moveTo(xStart, yStart);
-    ctx.lineTo(xStart - this.SIZE, yStart + this.SIZE);
+    ctx.lineTo(xStart - this.SIZE / 2, yStart + this.SIZE);
     ctx.stroke();
   }
 
@@ -73,8 +73,8 @@ export class HealthBar {
     const xStart = x;
     const yStart = y;
     ctx.beginPath();
-    ctx.moveTo(xStart, yStart);
-    ctx.lineTo(xStart + this.SIZE, yStart + this.SIZE);
+    ctx.moveTo(xStart + this.SIZE / 4, yStart);
+    ctx.lineTo(xStart + this.SIZE / 2, yStart + this.SIZE);
     ctx.stroke();
   }
 }
