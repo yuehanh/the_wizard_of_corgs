@@ -8,7 +8,7 @@ export const vectorDirectionInDegree = (x, y) => {
 };
 
 export const vectorDirectionsInSymbol = (x, y) => {
-  const THRESHOLD = 20;
+  const THRESHOLD = 15;
   const degree = vectorDirectionInDegree(x, y);
 
   switch (true) {
