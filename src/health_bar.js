@@ -1,3 +1,5 @@
+export const HealthType = ["hBar", "vBar", "fSlash", "bSlash"];
+
 export class HealthBar {
   constructor(enemy) {
     this.SIZE = 20;
