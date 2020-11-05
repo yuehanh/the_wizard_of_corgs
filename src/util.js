@@ -1,4 +1,6 @@
-export const vectorDirectionInDegree = (x, y) => {
+import { Vector } from "./vector";
+
+export const vectorDirectionInDegree = function (x, y) {
   let degree = (Math.atan(y / x) * 180) / Math.PI;
 
   if (x < 0) {
@@ -7,7 +9,7 @@ export const vectorDirectionInDegree = (x, y) => {
   return degree;
 };
 
-export const vectorDirectionsInSymbol = (x, y) => {
+export const vectorDirectionsInSymbol = function (x, y) {
   const THRESHOLD = 15;
   const degree = vectorDirectionInDegree(x, y);
 
@@ -37,4 +39,17 @@ export const vectorDirectionsInSymbol = (x, y) => {
     default:
       return "not detected";
   }
+};
+
+export const rndEntryPoint = function (game, enemy) {
+  const rndX = Math.random() * (game.width + enemy.width + 1) - enemy.width;
+  const rndY = Math.random() * (game.height + 1);
+  const choiceArray = [
+    new Vector(0 - enemy.width, rndY),
+    new Vector(game.width, rndY),
+    new Vector(rndX, 0 - enemy.height),
+  ];
+
+  const rndIdx = Math.random() * 3;
+  return choiceArray[rndIdx];
 };
