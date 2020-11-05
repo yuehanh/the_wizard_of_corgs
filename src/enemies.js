@@ -3,12 +3,8 @@ import { Vector } from "./vector";
 
 export class Enemy {
   constructor(game) {
-    this.health = ["hBar"];
-    this.body = document.createElement("monster");
-    this.healthBar = document.createElement("healthbar");
-    document.body.appendChild(this.body);
+    this.health = ["hBar", "vBar", "fSlash", "bSlash", "hBar"];
     this.game = game;
-    this.body.appendChild(this.healthBar);
     this.size = 20;
     this.pos = new Vector(40, 40);
     this.width = 20;
@@ -29,7 +25,6 @@ export class Enemy {
   }
 
   update(direction) {
-    debugger;
     if (direction === this.health[0]) {
       this.health = this.health.slice(1);
     }
@@ -39,7 +34,6 @@ export class Enemy {
   }
 
   remove() {
-    debugger;
     this.game.remove(this);
   }
 }
