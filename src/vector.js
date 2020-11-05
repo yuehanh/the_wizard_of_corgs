@@ -2,6 +2,7 @@ export class Vector {
   constructor(x, y) {
     this.x = x || 0;
     this.y = y || 0;
+    this.mag = Math.sqrt(x ** 2 + y ** 2);
   }
 
   set(x, y) {
