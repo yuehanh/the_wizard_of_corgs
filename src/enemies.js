@@ -9,7 +9,8 @@ export class Enemy {
     this.width = attr.width;
     this.height = attr.height;
     this.healthBar = new HealthBar(this);
-    this.targetPos = this.game.mainChar.pos;
+    this.mainChar = this.game.mainChar;
+    this.targetPos = this.mainChar.pos;
     this.image = attr.image;
     this.status = true;
     this.init();
@@ -28,10 +29,10 @@ export class Enemy {
     this.vel.scale(1 / (this.vel.mag * 5));
   }
 
-  draw(ctx) {
+  draw(ctx, frame) {
     ctx.drawImage(
       this.image,
-      0,
+      0 + 48 * frame,
       0,
       48,
       48,
@@ -40,6 +41,7 @@ export class Enemy {
       this.width,
       this.height
     );
+
     this.drawHealth(ctx);
   }
 
@@ -48,10 +50,11 @@ export class Enemy {
   }
 
   move() {
-    if (this.status) {
+    if (this.status && !this.isCollidedWith()) {
       this.pos = this.pos.add(this.vel);
     } else {
       this.remove();
+      this.mainChar.health -= 1;
     }
   }
 
@@ -68,10 +71,13 @@ export class Enemy {
     this.game.remove(this);
   }
 
-  isCollidedWith(mainChar) {
-    this.pos.x < mainChar.pos.x + mainChar.width &&
+  isCollidedWith() {
+    const mainChar = this.mainChar;
+    return (
+      this.pos.x < mainChar.pos.x + mainChar.width &&
       this.pos.x + this.width > mainChar.pos.x &&
       this.pos.y < mainChar.pos.y + mainChar.height &&
-      this.pos.y + this.height > mainChar.pos.y;
+      this.pos.y + this.height > mainChar.pos.y
+    );
   }
 }
