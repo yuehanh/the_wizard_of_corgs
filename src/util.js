@@ -50,6 +50,6 @@ export const rndEntryPoint = function (game, enemy) {
     new Vector(rndX, 0 - enemy.height),
   ];
 
-  const rndIdx = Math.random() * 3;
+  const rndIdx = Math.floor(Math.random() * 3);
   return choiceArray[rndIdx];
 };
