@@ -10,14 +10,16 @@ export class Vector {
     this.y = y;
   }
   add(vector) {
-    this.x += vector.x;
-    this.y += vector.y;
+    return new Vector(vector.x + this.x, vector.y + this.y);
   }
   minus(vector) {
-    this.x -= vector.x;
-    this.y -= vector.y;
+    return new Vector(this.x - vector.x, this.y - vector.y);
   }
 
+  scale(mag) {
+    this.x /= this.x / mag;
+    this.y /= this.y / mag;
+  }
   reverse(vector) {
     this.x = -vector.x;
     this.y = -vector.y;
