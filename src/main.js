@@ -1,11 +1,11 @@
 import { Game } from "./game";
+import { background } from "./images";
 
 document.addEventListener("DOMContentLoaded", () => {
   const backgroundCanvas = document.getElementById("background-canvas");
   const bound = backgroundCanvas.getBoundingClientRect();
   backgroundCanvas.width = bound.width;
   backgroundCanvas.width = bound.height;
-  let background = new Image();
   background.onload = () => {
     const backgroundCtx = backgroundCanvas.getContext("2d");
     backgroundCtx.drawImage(
@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
       backgroundCanvas.height
     );
   };
-
-  background.src = "./image/background.png";
 
   const canvas = document.getElementById("canvas");
   canvas.width = bound.width;
