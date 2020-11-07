@@ -720,13 +720,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "corgi", function() { return corgi; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hearts", function() { return hearts; });
 var background = new Image();
-background.src = "./image/background.png";
+background.src = "./dist/image/background.png";
 var ghostSprites = new Image();
-ghostSprites.src = "./image/ghosts.png";
+ghostSprites.src = "./dist/image/ghosts.png";
 var corgi = new Image();
-corgi.src = "./image/corgi.png";
+corgi.src = "./dist/image/corgi.png";
 var hearts = new Image();
-hearts.src = "./image/hearts.png";
+hearts.src = "./dist/image/hearts.png";
 
 /***/ }),
 
