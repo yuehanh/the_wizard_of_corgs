@@ -278,7 +278,7 @@ var Command = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Enemy", function() { return Enemy; });
 /* harmony import */ var _health_bar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./health_bar */ "./src/health_bar.js");
-/* harmony import */ var _vector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vector */ "./src/vector.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -288,29 +288,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var Enemy = /*#__PURE__*/function () {
-  function Enemy(game) {
+  function Enemy(attr) {
     _classCallCheck(this, Enemy);
 
-    this.health = ["hBar"];
-    this.body = document.createElement("monster");
-    this.healthBar = document.createElement("healthbar");
-    document.body.appendChild(this.body);
-    this.game = game;
-    this.body.appendChild(this.healthBar);
-    this.size = 20;
-    this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](40, 40);
-    this.width = 20;
-    this.height = 40;
+    this.level = attr.level;
+    this.health = [];
+    this.game = attr.game;
+    this.width = attr.width;
+    this.height = attr.height;
     this.healthBar = new _health_bar__WEBPACK_IMPORTED_MODULE_0__["HealthBar"](this);
+    this.mainChar = this.game.mainChar;
+    this.targetPos = this.mainChar.pos;
+    this.image = attr.image;
+    this.status = true;
+    this.init();
   }
 
   _createClass(Enemy, [{
+    key: "init",
+    value: function init() {
+      var i = 0;
+
+      while (i < this.level) {
+        var rndIdx = Math.floor(Math.random() * _health_bar__WEBPACK_IMPORTED_MODULE_0__["HealthType"].length);
+        this.health.push(_health_bar__WEBPACK_IMPORTED_MODULE_0__["HealthType"][rndIdx]);
+        i++;
+      } // this.pos = new Vector(40, 40);
+
+
+      this.pos = Object(_util__WEBPACK_IMPORTED_MODULE_1__["rndEntryPoint"])(this.game, this);
+      this.vel = this.targetPos.minus(this.pos);
+      this.vel.scale(1 / (this.vel.mag * 5));
+    }
+  }, {
     key: "draw",
-    value: function draw(ctx) {
-      ctx.beginPath();
-      ctx.rect(this.pos.x, this.pos.y, this.width, this.height);
-      ctx.fillStyle = "red";
-      ctx.fill();
+    value: function draw(ctx, image, frame) {
+      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / 20) % 4), 0, 48, 48, this.pos.x, this.pos.y, this.width, this.height);
       this.drawHealth(ctx);
     }
   }, {
@@ -319,23 +332,39 @@ var Enemy = /*#__PURE__*/function () {
       this.healthBar.draw(ctx);
     }
   }, {
+    key: "move",
+    value: function move() {
+      if (this.status && !this.isCollidedWith()) {
+        this.pos = this.pos.add(this.vel);
+      } else {
+        this.remove();
+
+        if (this.isCollidedWith()) {
+          this.mainChar.hurt();
+        }
+      }
+    }
+  }, {
     key: "update",
     value: function update(direction) {
-      debugger;
-
       if (direction === this.health[0]) {
         this.health = this.health.slice(1);
       }
 
       if (this.health.length === 0) {
-        this.remove();
+        this.status = false;
       }
     }
   }, {
     key: "remove",
     value: function remove() {
-      debugger;
       this.game.remove(this);
+    }
+  }, {
+    key: "isCollidedWith",
+    value: function isCollidedWith() {
+      var mainChar = this.mainChar;
+      return this.pos.x < mainChar.pos.x + mainChar.width && this.pos.x + this.width > mainChar.pos.x && this.pos.y < mainChar.pos.y + mainChar.height && this.pos.y + this.height > mainChar.pos.y;
     }
   }]);
 
@@ -356,6 +385,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
 /* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./command */ "./src/command.js");
 /* harmony import */ var _enemies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./enemies */ "./src/enemies.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./images */ "./src/images.js");
+/* harmony import */ var _main_char__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./main_char */ "./src/main_char.js");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -370,33 +401,89 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
+
 var Game = /*#__PURE__*/function () {
   function Game(canvas) {
     _classCallCheck(this, Game);
 
-    this.enemies = [];
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+    this.width = canvas.width;
+    this.height = canvas.height;
+    this.animate = this.animate.bind(this);
+    this.loadedImages = new Set();
+    this.frameId = 0;
+    this.maxHealth = 5;
+    this.enemies = [];
   }
 
   _createClass(Game, [{
     key: "start",
     value: function start() {
+      var _this = this;
+
       var command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this);
-      this.addEnemy();
-      this.draw();
+
+      _images__WEBPACK_IMPORTED_MODULE_2__["corgi"].onload = function () {
+        _this.loadedImages.add("corgi");
+      };
+
+      _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"].onload = function () {
+        _this.loadedImages.add("sprites");
+      };
+
+      _images__WEBPACK_IMPORTED_MODULE_2__["hearts"].onload = function () {
+        _this.loadedImages.add("hearts");
+      };
+
+      this.addMainChar();
+      this.addEnemy({
+        level: 1,
+        game: this,
+        width: 40,
+        height: 40
+      });
+      this.addEnemy({
+        level: 2,
+        game: this,
+        width: 40,
+        height: 40
+      });
+      this.addEnemy({
+        level: 3,
+        game: this,
+        width: 40,
+        height: 40
+      });
+      this.addEnemy({
+        level: 4,
+        game: this,
+        width: 40,
+        height: 40
+      });
+      this.addEnemy({
+        level: 5,
+        game: this,
+        width: 40,
+        height: 40
+      });
+      this.animate();
+    }
+  }, {
+    key: "addMainChar",
+    value: function addMainChar() {
+      this.mainChar = new _main_char__WEBPACK_IMPORTED_MODULE_3__["MainChar"](this, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"]);
     }
   }, {
     key: "addEnemy",
-    value: function addEnemy() {
-      var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_1__["Enemy"](this);
+    value: function addEnemy(attr) {
+      var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_1__["Enemy"](attr);
       this.enemies.push(enemy);
     }
   }, {
     key: "receiveCommand",
     value: function receiveCommand(direction) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
       var _iterator = _createForOfIteratorHelper(this.enemies),
           _step;
 
@@ -410,19 +497,27 @@ var Game = /*#__PURE__*/function () {
       } finally {
         _iterator.f();
       }
-
-      this.draw();
     }
   }, {
-    key: "draw",
-    value: function draw() {
+    key: "animate",
+    value: function animate() {
+      if (this.loaded()) {
+        this.draw();
+        this.move();
+      }
+
+      this.frameId = requestAnimationFrame(this.animate);
+    }
+  }, {
+    key: "move",
+    value: function move() {
       var _iterator2 = _createForOfIteratorHelper(this.enemies),
           _step2;
 
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
           var enemy = _step2.value;
-          enemy.draw(this.ctx);
+          enemy.move();
         }
       } catch (err) {
         _iterator2.e(err);
@@ -431,11 +526,52 @@ var Game = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "draw",
+    value: function draw() {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+
+      var _iterator3 = _createForOfIteratorHelper(this.enemies),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var enemy = _step3.value;
+          enemy.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], this.frameId);
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+
+      this.mainChar.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], this.frameId);
+      this.drawHearts();
+    }
+  }, {
     key: "remove",
     value: function remove(obj) {
-      debugger;
       var idx = this.enemies.indexOf(obj);
       this.enemies.splice(idx, 1);
+    }
+  }, {
+    key: "drawHearts",
+    value: function drawHearts() {
+      var i = 0;
+
+      while (i < this.mainChar.health) {
+        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 23, 10, 20, 20);
+        i++;
+      }
+
+      while (i < this.maxHealth) {
+        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 23, 10, 20, 20);
+        i++;
+      }
+    }
+  }, {
+    key: "loaded",
+    value: function loaded() {
+      return this.loadedImages.has("corgi") && this.loadedImages.has("sprites") && this.loadedImages.has("hearts");
     }
   }]);
 
@@ -448,11 +584,12 @@ var Game = /*#__PURE__*/function () {
 /*!***************************!*\
   !*** ./src/health_bar.js ***!
   \***************************/
-/*! exports provided: HealthBar */
+/*! exports provided: HealthType, HealthBar */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HealthType", function() { return HealthType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HealthBar", function() { return HealthBar; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -460,12 +597,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var HealthType = ["hBar", "vBar", "fSlash", "bSlash"];
 var HealthBar = /*#__PURE__*/function () {
   function HealthBar(enemy) {
     _classCallCheck(this, HealthBar);
 
-    this.SIZE = 20;
-    this.BETWEEN = 5;
+    this.SIZE = 15;
+    this.BETWEEN = 3;
     this.GAP = 10;
     this.enemy = enemy;
   }
@@ -477,7 +615,7 @@ var HealthBar = /*#__PURE__*/function () {
 
       this.update();
       this.enemy.health.forEach(function (direction, idx) {
-        ctx.strokeStyle = "red";
+        ctx.lineWidth = 5;
         var directionY = _this.y;
         var directionX = _this.x + idx * (_this.SIZE + _this.BETWEEN);
 
@@ -523,6 +661,7 @@ var HealthBar = /*#__PURE__*/function () {
       var xStart = x + this.SIZE / 2;
       var yStart = y;
       ctx.beginPath();
+      ctx.strokeStyle = "red";
       ctx.moveTo(xStart, yStart);
       ctx.lineTo(xStart, yStart + this.SIZE);
       ctx.stroke();
@@ -533,6 +672,7 @@ var HealthBar = /*#__PURE__*/function () {
       var xStart = x;
       var yStart = y + this.SIZE / 2;
       ctx.beginPath();
+      ctx.strokeStyle = "blue";
       ctx.moveTo(xStart, yStart);
       ctx.lineTo(xStart + this.SIZE, yStart);
       ctx.stroke();
@@ -540,11 +680,12 @@ var HealthBar = /*#__PURE__*/function () {
   }, {
     key: "drawFSlash",
     value: function drawFSlash(ctx, x, y) {
-      var xStart = x + this.SIZE;
+      var xStart = x + this.SIZE * 3 / 4;
       var yStart = y;
       ctx.beginPath();
+      ctx.strokeStyle = "gold";
       ctx.moveTo(xStart, yStart);
-      ctx.lineTo(xStart - this.SIZE, yStart + this.SIZE);
+      ctx.lineTo(xStart - this.SIZE / 2, yStart + this.SIZE);
       ctx.stroke();
     }
   }, {
@@ -553,14 +694,39 @@ var HealthBar = /*#__PURE__*/function () {
       var xStart = x;
       var yStart = y;
       ctx.beginPath();
-      ctx.moveTo(xStart, yStart);
-      ctx.lineTo(xStart + this.SIZE, yStart + this.SIZE);
+      ctx.strokeStyle = "cyan";
+      ctx.moveTo(xStart + this.SIZE / 4, yStart);
+      ctx.lineTo(xStart + this.SIZE / 2, yStart + this.SIZE);
       ctx.stroke();
     }
   }]);
 
   return HealthBar;
 }();
+
+/***/ }),
+
+/***/ "./src/images.js":
+/*!***********************!*\
+  !*** ./src/images.js ***!
+  \***********************/
+/*! exports provided: background, ghostSprites, corgi, hearts */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "background", function() { return background; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ghostSprites", function() { return ghostSprites; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "corgi", function() { return corgi; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hearts", function() { return hearts; });
+var background = new Image();
+background.src = "./image/background.png";
+var ghostSprites = new Image();
+ghostSprites.src = "./image/ghosts.png";
+var corgi = new Image();
+corgi.src = "./image/corgi.png";
+var hearts = new Image();
+hearts.src = "./image/hearts.png";
 
 /***/ }),
 
@@ -574,10 +740,21 @@ var HealthBar = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/game.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./images */ "./src/images.js");
+
 
 document.addEventListener("DOMContentLoaded", function () {
+  var backgroundCanvas = document.getElementById("background-canvas");
+  var bound = backgroundCanvas.getBoundingClientRect();
+  backgroundCanvas.width = bound.width;
+  backgroundCanvas.width = bound.height;
+
+  _images__WEBPACK_IMPORTED_MODULE_1__["background"].onload = function () {
+    var backgroundCtx = backgroundCanvas.getContext("2d");
+    backgroundCtx.drawImage(_images__WEBPACK_IMPORTED_MODULE_1__["background"], 0, 0, backgroundCanvas.width, backgroundCanvas.height);
+  };
+
   var canvas = document.getElementById("canvas");
-  var bound = canvas.getBoundingClientRect();
   canvas.width = bound.width;
   canvas.height = bound.height;
   var game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](canvas);
@@ -586,17 +763,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /***/ }),
 
+/***/ "./src/main_char.js":
+/*!**************************!*\
+  !*** ./src/main_char.js ***!
+  \**************************/
+/*! exports provided: MainChar */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MainChar", function() { return MainChar; });
+/* harmony import */ var _health_bar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./health_bar */ "./src/health_bar.js");
+/* harmony import */ var _vector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vector */ "./src/vector.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var MainChar = /*#__PURE__*/function () {
+  function MainChar(game, image) {
+    _classCallCheck(this, MainChar);
+
+    this.OFFSET = 40;
+    this.health = 5;
+    this.game = game;
+    this.width = 60;
+    this.height = 60;
+    this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](game.width / 2 - this.width / 2, game.height - this.height - this.OFFSET);
+    this.image = image;
+    this.frameSpeed = 20;
+  }
+
+  _createClass(MainChar, [{
+    key: "draw",
+    value: function draw(ctx, image, frame) {
+      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / this.frameSpeed) % 3), 336, 48, 48, this.pos.x, this.pos.y, this.width, this.height); // this.drawHealth(ctx);
+    }
+  }, {
+    key: "hurt",
+    value: function hurt() {
+      var _this = this;
+
+      this.health -= 1;
+      this.frameSpeed = 2;
+      setTimeout(function () {
+        _this.frameSpeed = 20;
+      }, 500);
+    }
+  }, {
+    key: "update",
+    value: function update() {}
+  }]);
+
+  return MainChar;
+}();
+
+/***/ }),
+
 /***/ "./src/util.js":
 /*!*********************!*\
   !*** ./src/util.js ***!
   \*********************/
-/*! exports provided: vectorDirectionInDegree, vectorDirectionsInSymbol */
+/*! exports provided: vectorDirectionInDegree, vectorDirectionsInSymbol, rndEntryPoint */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "vectorDirectionInDegree", function() { return vectorDirectionInDegree; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "vectorDirectionsInSymbol", function() { return vectorDirectionsInSymbol; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rndEntryPoint", function() { return rndEntryPoint; });
+/* harmony import */ var _vector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vector */ "./src/vector.js");
+
 var vectorDirectionInDegree = function vectorDirectionInDegree(x, y) {
   var degree = Math.atan(y / x) * 180 / Math.PI;
 
@@ -607,7 +847,7 @@ var vectorDirectionInDegree = function vectorDirectionInDegree(x, y) {
   return degree;
 };
 var vectorDirectionsInSymbol = function vectorDirectionsInSymbol(x, y) {
-  var THRESHOLD = 20;
+  var THRESHOLD = 12.5;
   var degree = vectorDirectionInDegree(x, y);
 
   switch (true) {
@@ -641,6 +881,13 @@ var vectorDirectionsInSymbol = function vectorDirectionsInSymbol(x, y) {
       return "not detected";
   }
 };
+var rndEntryPoint = function rndEntryPoint(game, enemy) {
+  var rndX = Math.random() * (game.width + enemy.width + 1) - enemy.width;
+  var rndY = Math.random() * (game.height + 1);
+  var choiceArray = [new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](0 - enemy.width, rndY), new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](game.width, rndY), new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](rndX, 0 - enemy.height)];
+  var rndIdx = Math.floor(Math.random() * 3);
+  return choiceArray[rndIdx];
+};
 
 /***/ }),
 
@@ -666,6 +913,7 @@ var Vector = /*#__PURE__*/function () {
 
     this.x = x || 0;
     this.y = y || 0;
+    this.mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
   }
 
   _createClass(Vector, [{
@@ -677,14 +925,18 @@ var Vector = /*#__PURE__*/function () {
   }, {
     key: "add",
     value: function add(vector) {
-      this.x += vector.x;
-      this.y += vector.y;
+      return new Vector(vector.x + this.x, vector.y + this.y);
     }
   }, {
     key: "minus",
     value: function minus(vector) {
-      this.x -= vector.x;
-      this.y -= vector.y;
+      return new Vector(this.x - vector.x, this.y - vector.y);
+    }
+  }, {
+    key: "scale",
+    value: function scale(mag) {
+      this.x *= mag;
+      this.y *= mag;
     }
   }, {
     key: "reverse",
