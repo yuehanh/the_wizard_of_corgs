@@ -1,11 +1,11 @@
 export const background = new Image();
-background.src = "./image/background.png";
+background.src = "./dist/image/background.png";
 
 export const ghostSprites = new Image();
-ghostSprites.src = "./image/ghosts.png";
+ghostSprites.src = "./dist/image/ghosts.png";
 
 export const corgi = new Image();
-corgi.src = "./image/corgi.png";
+corgi.src = "./dist/image/corgi.png";
 
 export const hearts = new Image();
-hearts.src = "./image/hearts.png";
+hearts.src = "./dist/image/hearts.png";
