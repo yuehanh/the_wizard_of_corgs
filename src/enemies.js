@@ -29,10 +29,10 @@ export class Enemy {
     this.vel.scale(1 / (this.vel.mag * 5));
   }
 
-  draw(ctx, frame) {
+  draw(ctx, image, frame) {
     ctx.drawImage(
-      this.image,
-      0 + 48 * frame,
+      image,
+      0 + 48 * (Math.floor(frame / 20) % 4),
       0,
       48,
       48,
@@ -54,7 +54,9 @@ export class Enemy {
       this.pos = this.pos.add(this.vel);
     } else {
       this.remove();
-      this.mainChar.health -= 1;
+      if (this.isCollidedWith()) {
+        this.mainChar.health -= 1;
+      }
     }
   }
 
