@@ -2,8 +2,8 @@ export const HealthType = ["hBar", "vBar", "fSlash", "bSlash"];
 
 export class HealthBar {
   constructor(enemy) {
-    this.SIZE = 20;
-    this.BETWEEN = 5;
+    this.SIZE = 15;
+    this.BETWEEN = 3;
     this.GAP = 10;
     this.enemy = enemy;
   }
@@ -11,7 +11,8 @@ export class HealthBar {
   draw(ctx) {
     this.update();
     this.enemy.health.forEach((direction, idx) => {
-      ctx.strokeStyle = "red";
+      ctx.lineWidth = 5;
+
       const directionY = this.y;
       const directionX = this.x + idx * (this.SIZE + this.BETWEEN);
       this.drawDirections(direction, ctx, directionX, directionY);
@@ -48,6 +49,7 @@ export class HealthBar {
     const xStart = x + this.SIZE / 2;
     const yStart = y;
     ctx.beginPath();
+    ctx.strokeStyle = "red";
     ctx.moveTo(xStart, yStart);
     ctx.lineTo(xStart, yStart + this.SIZE);
     ctx.stroke();
@@ -57,6 +59,7 @@ export class HealthBar {
     const xStart = x;
     const yStart = y + this.SIZE / 2;
     ctx.beginPath();
+    ctx.strokeStyle = "blue";
     ctx.moveTo(xStart, yStart);
     ctx.lineTo(xStart + this.SIZE, yStart);
     ctx.stroke();
@@ -66,6 +69,7 @@ export class HealthBar {
     const xStart = x + (this.SIZE * 3) / 4;
     const yStart = y;
     ctx.beginPath();
+    ctx.strokeStyle = "gold";
     ctx.moveTo(xStart, yStart);
     ctx.lineTo(xStart - this.SIZE / 2, yStart + this.SIZE);
     ctx.stroke();
@@ -75,6 +79,7 @@ export class HealthBar {
     const xStart = x;
     const yStart = y;
     ctx.beginPath();
+    ctx.strokeStyle = "cyan";
     ctx.moveTo(xStart + this.SIZE / 4, yStart);
     ctx.lineTo(xStart + this.SIZE / 2, yStart + this.SIZE);
     ctx.stroke();
