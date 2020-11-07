@@ -55,7 +55,7 @@ export class Enemy {
     } else {
       this.remove();
       if (this.isCollidedWith()) {
-        this.mainChar.health -= 1;
+        this.mainChar.hurt();
       }
     }
   }
