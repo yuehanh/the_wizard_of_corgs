@@ -101,11 +101,11 @@ export class Game {
   drawHearts() {
     let i = 0;
     while (i < this.mainChar.health) {
-      this.ctx.drawImage(hearts, 0, 0, 17, 17, 10 + i * 23, 10, 20, 20);
+      this.ctx.drawImage(hearts, 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
       i++;
     }
     while (i < this.maxHealth) {
-      this.ctx.drawImage(hearts, 17 * 4, 0, 17, 17, 10 + i * 23, 10, 20, 20);
+      this.ctx.drawImage(hearts, 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
       i++;
     }
   }
