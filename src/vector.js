@@ -17,8 +17,8 @@ export class Vector {
   }
 
   scale(mag) {
-    this.x /= this.x / mag;
-    this.y /= this.y / mag;
+    this.x *= mag;
+    this.y *= mag;
   }
   reverse(vector) {
     this.x = -vector.x;
