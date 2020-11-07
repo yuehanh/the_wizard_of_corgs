@@ -1,5 +1,7 @@
 body {
   background-color: #04071e;
+  display: flex;
+  justify-content: center;
 }
 #main {
   display: flex;
