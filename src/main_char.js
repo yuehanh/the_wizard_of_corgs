@@ -20,7 +20,6 @@ export class MainChar {
   }
 
   draw(ctx, image, frame) {
-    debugger;
     ctx.drawImage(
       image,
       0 + 48 * (Math.floor(frame / this.frameSpeed) % 3),

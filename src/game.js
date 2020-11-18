@@ -9,24 +9,28 @@ export class Game {
     this.ctx = canvas.getContext("2d");
     this.width = canvas.width;
     this.height = canvas.height;
-    this.animate = this.animate.bind(this);
-    this.loadedImages = new Set();
-    this.frameId = 0;
-    this.maxHealth = 5;
+
     this.enemies = [];
+    this.maxHealth = 5;
+    this.level = 1;
+    this.score = 0;
+    this.levelStarted = false;
+    this.levelCompleted = false;
+    this.levelChanged = false;
+    this.newLevel = false;
+
+    this.gameOver = false;
+
+    this.MAX_ENEMY = 10;
+
+    this.frameId = 0;
+    this.loadedImages = new Set();
+    this.animate = this.animate.bind(this);
   }
 
   start() {
     const command = new Command(canvas, this);
-    corgi.onload = () => {
-      this.loadedImages.add("corgi");
-    };
-    ghostSprites.onload = () => {
-      this.loadedImages.add("sprites");
-    };
-    hearts.onload = () => {
-      this.loadedImages.add("hearts");
-    };
+
     this.addMainChar();
     this.addEnemy({
       level: 1,
@@ -58,15 +62,18 @@ export class Game {
   addMainChar() {
     this.mainChar = new MainChar(this, corgi);
   }
+
   addEnemy(attr) {
     const enemy = new Enemy(attr);
     this.enemies.push(enemy);
   }
+
   receiveCommand(direction) {
     for (const enemy of this.enemies) {
       enemy.update(direction);
     }
   }
+
   animate() {
     if (this.loaded()) {
       this.draw();
@@ -74,11 +81,13 @@ export class Game {
     }
     this.frameId = requestAnimationFrame(this.animate);
   }
+
   move() {
     for (const enemy of this.enemies) {
       enemy.move();
     }
   }
+
   draw() {
     this.ctx.clearRect(0, 0, this.width, this.height);
     for (const enemy of this.enemies) {
@@ -106,12 +115,5 @@ export class Game {
       this.ctx.drawImage(hearts, 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
       i++;
     }
-  }
-  loaded() {
-    return (
-      this.loadedImages.has("corgi") &&
-      this.loadedImages.has("sprites") &&
-      this.loadedImages.has("hearts")
-    );
   }
 }
