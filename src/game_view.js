@@ -10,11 +10,11 @@ export class GameView {
     this.frameId = 0;
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
+    this.command = new Command(canvas, this.game);
     this.start();
   }
 
   start() {
-    new Command(canvas, this.game);
     corgi.onload = () => {
       this.loadedImages.add("corgi");
     };
@@ -35,6 +35,8 @@ export class GameView {
 
     if (this.game.gameOver) {
       console.log("game Over");
+      cancelAnimationFrame(this.frameId);
+      this.gam;
     }
     this.frameId = requestAnimationFrame(this.animate);
   }

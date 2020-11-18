@@ -6,7 +6,7 @@ export class Enemy {
     this.level = attr.level;
     this.health = [];
     this.game = attr.game;
-    this.size = attr.size;
+    this.size = attr.size || 40;
     this.healthBar = new HealthBar(this);
     this.mainChar = this.game.mainChar;
     this.targetPos = this.mainChar.center;

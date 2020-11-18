@@ -295,7 +295,7 @@ var Enemy = /*#__PURE__*/function () {
     this.level = attr.level;
     this.health = [];
     this.game = attr.game;
-    this.size = attr.size;
+    this.size = attr.size || 40;
     this.healthBar = new _health_bar__WEBPACK_IMPORTED_MODULE_0__["HealthBar"](this);
     this.mainChar = this.game.mainChar;
     this.targetPos = this.mainChar.center;
@@ -412,12 +412,9 @@ var Game = /*#__PURE__*/function () {
     this.height = canvas.height;
     this.enemies = [];
     this.maxHealth = 5;
-    this.level = 1;
+    this.level = 0;
     this.score = 0;
     this.levelStarted = false;
-    this.levelCompleted = false;
-    this.levelChanged = false;
-    this.newLevel = false;
     this.gameOver = false;
     this.MAX_ENEMY = 10;
   }
@@ -426,31 +423,14 @@ var Game = /*#__PURE__*/function () {
     key: "start",
     value: function start() {
       this.addMainChar();
-      this.addEnemy({
-        level: 1,
-        game: this,
-        size: 100
-      });
-      this.addEnemy({
-        level: 2,
-        game: this,
-        size: 100
-      });
-      this.addEnemy({
-        level: 3,
-        game: this,
-        size: 100
-      });
-      this.addEnemy({
-        level: 4,
-        game: this,
-        size: 100
-      });
-      this.addEnemy({
-        level: 5,
-        game: this,
-        size: 100
-      });
+      this.startNewLevel();
+    }
+  }, {
+    key: "startNewLevel",
+    value: function startNewLevel() {
+      this.levelStarted = true;
+      this.level++;
+      this.addEnemy();
     }
   }, {
     key: "addMainChar",
@@ -459,9 +439,17 @@ var Game = /*#__PURE__*/function () {
     }
   }, {
     key: "addEnemy",
-    value: function addEnemy(attr) {
-      var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_1__["Enemy"](attr);
-      this.enemies.push(enemy);
+    value: function addEnemy() {
+      var enemyNum = Math.min(this.level, this.MAX_ENEMY);
+      var attr = {
+        level: this.level,
+        game: this
+      };
+
+      for (var i = 0; i < enemyNum; i++) {
+        var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_1__["Enemy"](attr);
+        this.enemies.push(enemy);
+      }
     }
   }, {
     key: "receiveCommand",
@@ -486,6 +474,7 @@ var Game = /*#__PURE__*/function () {
       this.draw(ctx, frame);
       this.move();
       this.isGameOver();
+      this.isLevelCompleted();
     }
   }, {
     key: "move",
@@ -509,6 +498,18 @@ var Game = /*#__PURE__*/function () {
     value: function isGameOver() {
       if (this.mainChar.health <= 0) {
         this.gameOver = true;
+      }
+    }
+  }, {
+    key: "isLevelCompleted",
+    value: function isLevelCompleted() {
+      var _this = this;
+
+      if (this.enemies.length < 1 && this.levelStarted) {
+        this.levelStarted = false;
+        setTimeout(function () {
+          _this.startNewLevel();
+        }, 3000);
       }
     }
   }, {
@@ -608,6 +609,7 @@ var GameView = /*#__PURE__*/function () {
     this.frameId = 0;
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
+    this.command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this.game);
     this.start();
   }
 
@@ -615,8 +617,6 @@ var GameView = /*#__PURE__*/function () {
     key: "start",
     value: function start() {
       var _this = this;
-
-      new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this.game);
 
       _images__WEBPACK_IMPORTED_MODULE_2__["corgi"].onload = function () {
         _this.loadedImages.add("corgi");
@@ -642,6 +642,8 @@ var GameView = /*#__PURE__*/function () {
 
       if (this.game.gameOver) {
         console.log("game Over");
+        cancelAnimationFrame(this.frameId);
+        this.gam;
       }
 
       this.frameId = requestAnimationFrame(this.animate);
@@ -864,7 +866,7 @@ var MainChar = /*#__PURE__*/function () {
   function MainChar(game, image) {
     _classCallCheck(this, MainChar);
 
-    this.health = 1;
+    this.health = 5;
     this.game = game;
     this.size = 100;
     this.OFFSET = 60;
@@ -924,7 +926,7 @@ var vectorDirectionInDegree = function vectorDirectionInDegree(x, y) {
   return degree;
 };
 var vectorDirectionsInSymbol = function vectorDirectionsInSymbol(x, y) {
-  var THRESHOLD = 12.5;
+  var THRESHOLD = 15;
   var degree = vectorDirectionInDegree(x, y);
 
   switch (true) {

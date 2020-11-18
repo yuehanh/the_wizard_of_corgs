@@ -11,13 +11,9 @@ export class Game {
 
     this.enemies = [];
     this.maxHealth = 5;
-    this.level = 1;
+    this.level = 0;
     this.score = 0;
     this.levelStarted = false;
-    this.levelCompleted = false;
-    this.levelChanged = false;
-    this.newLevel = false;
-
     this.gameOver = false;
 
     this.MAX_ENEMY = 10;
@@ -25,39 +21,29 @@ export class Game {
 
   start() {
     this.addMainChar();
-    this.addEnemy({
-      level: 1,
-      game: this,
-      size: 100,
-    });
-    this.addEnemy({
-      level: 2,
-      game: this,
-      size: 100,
-    });
-    this.addEnemy({
-      level: 3,
-      game: this,
-      size: 100,
-    });
-    this.addEnemy({
-      level: 4,
-      game: this,
-      size: 100,
-    });
-    this.addEnemy({
-      level: 5,
-      game: this,
-      size: 100,
-    });
+    this.startNewLevel();
   }
+
+  startNewLevel() {
+    this.levelStarted = true;
+    this.level++;
+    this.addEnemy();
+  }
+
   addMainChar() {
     this.mainChar = new MainChar(this, corgi);
   }
 
-  addEnemy(attr) {
-    const enemy = new Enemy(attr);
-    this.enemies.push(enemy);
+  addEnemy() {
+    const enemyNum = Math.min(this.level, this.MAX_ENEMY);
+    const attr = {
+      level: this.level,
+      game: this,
+    };
+    for (let i = 0; i < enemyNum; i++) {
+      const enemy = new Enemy(attr);
+      this.enemies.push(enemy);
+    }
   }
 
   receiveCommand(direction) {
@@ -70,6 +56,7 @@ export class Game {
     this.draw(ctx, frame);
     this.move();
     this.isGameOver();
+    this.isLevelCompleted();
   }
 
   move() {
@@ -81,6 +68,15 @@ export class Game {
   isGameOver() {
     if (this.mainChar.health <= 0) {
       this.gameOver = true;
+    }
+  }
+
+  isLevelCompleted() {
+    if (this.enemies.length < 1 && this.levelStarted) {
+      this.levelStarted = false;
+      setTimeout(() => {
+        this.startNewLevel();
+      }, 3000);
     }
   }
   remove(obj) {
