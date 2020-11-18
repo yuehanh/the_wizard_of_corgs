@@ -337,6 +337,7 @@ var Enemy = /*#__PURE__*/function () {
       if (this.status && !this.isCollidedWith()) {
         this.pos = this.pos.add(this.vel);
       } else {
+        this.game.score += this.level * 100;
         this.remove();
 
         if (this.isCollidedWith()) {
