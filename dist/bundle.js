@@ -302,6 +302,7 @@ var Enemy = /*#__PURE__*/function () {
     this.image = attr.image;
     this.status = true;
     this.init();
+    this.value = this.level * 10;
   }
 
   _createClass(Enemy, [{
@@ -337,7 +338,7 @@ var Enemy = /*#__PURE__*/function () {
       if (this.status && !this.isCollidedWith()) {
         this.pos = this.pos.add(this.vel);
       } else {
-        this.game.score += this.level * 100;
+        this.game.score += this.value;
         this.remove();
 
         if (this.isCollidedWith()) {
