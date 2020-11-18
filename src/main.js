@@ -1,4 +1,5 @@
 import { Game } from "./game";
+import { GameView } from "./game_view";
 import { background } from "./images";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -20,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   canvas.width = bound.width;
   canvas.height = bound.height;
-
   const game = new Game(canvas);
-  game.start();
+  const gameView = new GameView(game, canvas);
 });

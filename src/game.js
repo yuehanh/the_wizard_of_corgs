@@ -22,10 +22,6 @@ export class Game {
     this.gameOver = false;
 
     this.MAX_ENEMY = 10;
-
-    this.frameId = 0;
-    this.loadedImages = new Set();
-    this.animate = this.animate.bind(this);
   }
 
   start() {
@@ -57,7 +53,6 @@ export class Game {
       game: this,
       size: 100,
     });
-    this.animate();
   }
   addMainChar() {
     this.mainChar = new MainChar(this, corgi);
@@ -74,12 +69,9 @@ export class Game {
     }
   }
 
-  animate() {
-    if (this.loaded()) {
-      this.draw();
-      this.move();
-    }
-    this.frameId = requestAnimationFrame(this.animate);
+  step(frame) {
+    this.draw(frame);
+    this.move();
   }
 
   move() {
@@ -88,15 +80,15 @@ export class Game {
     }
   }
 
-  draw() {
+  draw(frame) {
     this.ctx.clearRect(0, 0, this.width, this.height);
     for (const enemy of this.enemies) {
-      enemy.draw(this.ctx, ghostSprites, this.frameId);
+      enemy.draw(this.ctx, ghostSprites, frame);
     }
     for (const enemy of this.enemies) {
       enemy.drawHealth(this.ctx);
     }
-    this.mainChar.draw(this.ctx, corgi, this.frameId);
+    this.mainChar.draw(this.ctx, corgi, frame);
     this.drawHearts();
   }
 

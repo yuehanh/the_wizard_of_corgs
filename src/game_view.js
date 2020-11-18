@@ -1,9 +1,13 @@
 import { corgi, ghostSprites, hearts } from "./images";
 
-class GameView {
+export class GameView {
   constructor(game, ctx) {
     this.game = game;
     this.ctx = ctx;
+    this.frameId = 0;
+    this.animate = this.animate.bind(this);
+    this.loadedImages = new Set();
+    this.start();
   }
 
   start() {
@@ -16,9 +20,16 @@ class GameView {
     hearts.onload = () => {
       this.loadedImages.add("hearts");
     };
+    this.game.start();
+    this.animate();
   }
 
-  animate() {}
+  animate() {
+    if (!this.game.gameOver && this.loaded()) {
+      this.game.step(this.frameId);
+    }
+    this.frameId = requestAnimationFrame(this.animate);
+  }
 
   loaded() {
     return (

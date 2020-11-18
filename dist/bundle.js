@@ -183,7 +183,7 @@ var Command = /*#__PURE__*/function () {
       this.xLast = mousePos.x;
       this.yLast = mousePos.y; //starting position of visible path
 
-      this.beginPath();
+      this.ctx.beginPath();
       this.ctx.moveTo(this.xStart, this.yStart);
     }
   }, {
@@ -411,32 +411,22 @@ var Game = /*#__PURE__*/function () {
     this.ctx = canvas.getContext("2d");
     this.width = canvas.width;
     this.height = canvas.height;
-    this.animate = this.animate.bind(this);
-    this.loadedImages = new Set();
-    this.frameId = 0;
-    this.maxHealth = 5;
     this.enemies = [];
+    this.maxHealth = 5;
+    this.level = 1;
+    this.score = 0;
+    this.levelStarted = false;
+    this.levelCompleted = false;
+    this.levelChanged = false;
+    this.newLevel = false;
+    this.gameOver = false;
+    this.MAX_ENEMY = 10;
   }
 
   _createClass(Game, [{
     key: "start",
     value: function start() {
-      var _this = this;
-
       var command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this);
-
-      _images__WEBPACK_IMPORTED_MODULE_2__["corgi"].onload = function () {
-        _this.loadedImages.add("corgi");
-      };
-
-      _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"].onload = function () {
-        _this.loadedImages.add("sprites");
-      };
-
-      _images__WEBPACK_IMPORTED_MODULE_2__["hearts"].onload = function () {
-        _this.loadedImages.add("hearts");
-      };
-
       this.addMainChar();
       this.addEnemy({
         level: 1,
@@ -463,7 +453,6 @@ var Game = /*#__PURE__*/function () {
         game: this,
         size: 100
       });
-      this.animate();
     }
   }, {
     key: "addMainChar",
@@ -494,14 +483,10 @@ var Game = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "animate",
-    value: function animate() {
-      if (this.loaded()) {
-        this.draw();
-        this.move();
-      }
-
-      this.frameId = requestAnimationFrame(this.animate);
+    key: "step",
+    value: function step(frame) {
+      this.draw(frame);
+      this.move();
     }
   }, {
     key: "move",
@@ -522,7 +507,7 @@ var Game = /*#__PURE__*/function () {
     }
   }, {
     key: "draw",
-    value: function draw() {
+    value: function draw(frame) {
       this.ctx.clearRect(0, 0, this.width, this.height);
 
       var _iterator3 = _createForOfIteratorHelper(this.enemies),
@@ -531,7 +516,7 @@ var Game = /*#__PURE__*/function () {
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var enemy = _step3.value;
-          enemy.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], this.frameId);
+          enemy.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], frame);
         }
       } catch (err) {
         _iterator3.e(err);
@@ -554,7 +539,7 @@ var Game = /*#__PURE__*/function () {
         _iterator4.f();
       }
 
-      this.mainChar.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], this.frameId);
+      this.mainChar.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], frame);
       this.drawHearts();
     }
   }, {
@@ -578,6 +563,72 @@ var Game = /*#__PURE__*/function () {
         i++;
       }
     }
+  }]);
+
+  return Game;
+}();
+
+/***/ }),
+
+/***/ "./src/game_view.js":
+/*!**************************!*\
+  !*** ./src/game_view.js ***!
+  \**************************/
+/*! exports provided: GameView */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameView", function() { return GameView; });
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./images */ "./src/images.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var GameView = /*#__PURE__*/function () {
+  function GameView(game, ctx) {
+    _classCallCheck(this, GameView);
+
+    this.game = game;
+    this.ctx = ctx;
+    this.frameId = 0;
+    this.animate = this.animate.bind(this);
+    this.loadedImages = new Set();
+    this.start();
+  }
+
+  _createClass(GameView, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      _images__WEBPACK_IMPORTED_MODULE_0__["corgi"].onload = function () {
+        _this.loadedImages.add("corgi");
+      };
+
+      _images__WEBPACK_IMPORTED_MODULE_0__["ghostSprites"].onload = function () {
+        _this.loadedImages.add("sprites");
+      };
+
+      _images__WEBPACK_IMPORTED_MODULE_0__["hearts"].onload = function () {
+        _this.loadedImages.add("hearts");
+      };
+
+      this.game.start();
+      this.animate();
+    }
+  }, {
+    key: "animate",
+    value: function animate() {
+      if (!this.game.gameOver && this.loaded()) {
+        this.game.step(this.frameId);
+      }
+
+      this.frameId = requestAnimationFrame(this.animate);
+    }
   }, {
     key: "loaded",
     value: function loaded() {
@@ -585,7 +636,7 @@ var Game = /*#__PURE__*/function () {
     }
   }]);
 
-  return Game;
+  return GameView;
 }();
 
 /***/ }),
@@ -750,7 +801,9 @@ hearts.src = "./dist/image/hearts.png";
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/game.js");
-/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./images */ "./src/images.js");
+/* harmony import */ var _game_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./images */ "./src/images.js");
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -759,16 +812,16 @@ document.addEventListener("DOMContentLoaded", function () {
   backgroundCanvas.width = bound.width;
   backgroundCanvas.width = bound.height;
 
-  _images__WEBPACK_IMPORTED_MODULE_1__["background"].onload = function () {
+  _images__WEBPACK_IMPORTED_MODULE_2__["background"].onload = function () {
     var backgroundCtx = backgroundCanvas.getContext("2d");
-    backgroundCtx.drawImage(_images__WEBPACK_IMPORTED_MODULE_1__["background"], 0, 0, backgroundCanvas.width, backgroundCanvas.height);
+    backgroundCtx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["background"], 0, 0, backgroundCanvas.width, backgroundCanvas.height);
   };
 
   var canvas = document.getElementById("canvas");
   canvas.width = bound.width;
   canvas.height = bound.height;
   var game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](canvas);
-  game.start();
+  var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](game, canvas);
 });
 
 /***/ }),
@@ -783,14 +836,12 @@ document.addEventListener("DOMContentLoaded", function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MainChar", function() { return MainChar; });
-/* harmony import */ var _health_bar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./health_bar */ "./src/health_bar.js");
-/* harmony import */ var _vector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vector */ "./src/vector.js");
+/* harmony import */ var _vector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vector */ "./src/vector.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 var MainChar = /*#__PURE__*/function () {
@@ -801,8 +852,8 @@ var MainChar = /*#__PURE__*/function () {
     this.game = game;
     this.size = 100;
     this.OFFSET = 60;
-    this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](game.width / 2 - this.size / 2, game.height - this.size - this.OFFSET);
-    this.center = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](this.pos.x + this.size / 2, this.pos.y + this.size / 2);
+    this.pos = new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](game.width / 2 - this.size / 2, game.height - this.size - this.OFFSET);
+    this.center = new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](this.pos.x + this.size / 2, this.pos.y + this.size / 2);
     this.image = image;
     this.frameSpeed = 20;
   }
@@ -810,7 +861,6 @@ var MainChar = /*#__PURE__*/function () {
   _createClass(MainChar, [{
     key: "draw",
     value: function draw(ctx, image, frame) {
-      debugger;
       ctx.drawImage(image, 0 + 48 * (Math.floor(frame / this.frameSpeed) % 3), 336, 48, 48, this.pos.x, this.pos.y, this.size, this.size); // this.drawHealth(ctx);
     }
   }, {
