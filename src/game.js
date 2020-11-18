@@ -6,7 +6,6 @@ import { MainChar } from "./main_char";
 export class Game {
   constructor(canvas) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
     this.width = canvas.width;
     this.height = canvas.height;
 
@@ -25,8 +24,6 @@ export class Game {
   }
 
   start() {
-    const command = new Command(canvas, this);
-
     this.addMainChar();
     this.addEnemy({
       level: 1,
@@ -69,8 +66,8 @@ export class Game {
     }
   }
 
-  step(frame) {
-    this.draw(frame);
+  step(ctx, frame) {
+    this.draw(ctx, frame);
     this.move();
   }
 
@@ -80,31 +77,31 @@ export class Game {
     }
   }
 
-  draw(frame) {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    for (const enemy of this.enemies) {
-      enemy.draw(this.ctx, ghostSprites, frame);
-    }
-    for (const enemy of this.enemies) {
-      enemy.drawHealth(this.ctx);
-    }
-    this.mainChar.draw(this.ctx, corgi, frame);
-    this.drawHearts();
-  }
-
   remove(obj) {
     let idx = this.enemies.indexOf(obj);
     this.enemies.splice(idx, 1);
   }
 
-  drawHearts() {
+  draw(ctx, frame) {
+    ctx.clearRect(0, 0, this.width, this.height);
+    for (const enemy of this.enemies) {
+      enemy.draw(ctx, ghostSprites, frame);
+    }
+    for (const enemy of this.enemies) {
+      enemy.drawHealth(ctx);
+    }
+    this.mainChar.draw(ctx, corgi, frame);
+    this.drawHearts(ctx);
+  }
+
+  drawHearts(ctx) {
     let i = 0;
     while (i < this.mainChar.health) {
-      this.ctx.drawImage(hearts, 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+      ctx.drawImage(hearts, 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
       i++;
     }
     while (i < this.maxHealth) {
-      this.ctx.drawImage(hearts, 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+      ctx.drawImage(hearts, 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
       i++;
     }
   }

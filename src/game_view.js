@@ -1,9 +1,12 @@
+import { Command } from "./command";
+import { Game } from "./game";
 import { corgi, ghostSprites, hearts } from "./images";
 
 export class GameView {
-  constructor(game, ctx) {
-    this.game = game;
-    this.ctx = ctx;
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.game = new Game(canvas);
     this.frameId = 0;
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
@@ -11,6 +14,7 @@ export class GameView {
   }
 
   start() {
+    new Command(canvas, this.game);
     corgi.onload = () => {
       this.loadedImages.add("corgi");
     };
@@ -26,7 +30,10 @@ export class GameView {
 
   animate() {
     if (!this.game.gameOver && this.loaded()) {
-      this.game.step(this.frameId);
+      this.game.step(this.ctx, this.frameId);
+    }
+
+    if (this.game.gameOver) {
     }
     this.frameId = requestAnimationFrame(this.animate);
   }

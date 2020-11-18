@@ -408,7 +408,6 @@ var Game = /*#__PURE__*/function () {
     _classCallCheck(this, Game);
 
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
     this.width = canvas.width;
     this.height = canvas.height;
     this.enemies = [];
@@ -426,7 +425,6 @@ var Game = /*#__PURE__*/function () {
   _createClass(Game, [{
     key: "start",
     value: function start() {
-      var command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this);
       this.addMainChar();
       this.addEnemy({
         level: 1,
@@ -484,8 +482,8 @@ var Game = /*#__PURE__*/function () {
     }
   }, {
     key: "step",
-    value: function step(frame) {
-      this.draw(frame);
+    value: function step(ctx, frame) {
+      this.draw(ctx, frame);
       this.move();
     }
   }, {
@@ -506,9 +504,15 @@ var Game = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "remove",
+    value: function remove(obj) {
+      var idx = this.enemies.indexOf(obj);
+      this.enemies.splice(idx, 1);
+    }
+  }, {
     key: "draw",
-    value: function draw(frame) {
-      this.ctx.clearRect(0, 0, this.width, this.height);
+    value: function draw(ctx, frame) {
+      ctx.clearRect(0, 0, this.width, this.height);
 
       var _iterator3 = _createForOfIteratorHelper(this.enemies),
           _step3;
@@ -516,7 +520,7 @@ var Game = /*#__PURE__*/function () {
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var enemy = _step3.value;
-          enemy.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], frame);
+          enemy.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], frame);
         }
       } catch (err) {
         _iterator3.e(err);
@@ -531,7 +535,7 @@ var Game = /*#__PURE__*/function () {
         for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
           var _enemy = _step4.value;
 
-          _enemy.drawHealth(this.ctx);
+          _enemy.drawHealth(ctx);
         }
       } catch (err) {
         _iterator4.e(err);
@@ -539,27 +543,21 @@ var Game = /*#__PURE__*/function () {
         _iterator4.f();
       }
 
-      this.mainChar.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], frame);
-      this.drawHearts();
-    }
-  }, {
-    key: "remove",
-    value: function remove(obj) {
-      var idx = this.enemies.indexOf(obj);
-      this.enemies.splice(idx, 1);
+      this.mainChar.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], frame);
+      this.drawHearts(ctx);
     }
   }, {
     key: "drawHearts",
-    value: function drawHearts() {
+    value: function drawHearts(ctx) {
       var i = 0;
 
       while (i < this.mainChar.health) {
-        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
 
       while (i < this.maxHealth) {
-        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
     }
@@ -580,7 +578,9 @@ var Game = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameView", function() { return GameView; });
-/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./images */ "./src/images.js");
+/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./command */ "./src/command.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game */ "./src/game.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./images */ "./src/images.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -588,12 +588,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
+
+
 var GameView = /*#__PURE__*/function () {
-  function GameView(game, ctx) {
+  function GameView(canvas) {
     _classCallCheck(this, GameView);
 
-    this.game = game;
-    this.ctx = ctx;
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.game = new _game__WEBPACK_IMPORTED_MODULE_1__["Game"](canvas);
     this.frameId = 0;
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
@@ -605,15 +608,17 @@ var GameView = /*#__PURE__*/function () {
     value: function start() {
       var _this = this;
 
-      _images__WEBPACK_IMPORTED_MODULE_0__["corgi"].onload = function () {
+      new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this.game);
+
+      _images__WEBPACK_IMPORTED_MODULE_2__["corgi"].onload = function () {
         _this.loadedImages.add("corgi");
       };
 
-      _images__WEBPACK_IMPORTED_MODULE_0__["ghostSprites"].onload = function () {
+      _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"].onload = function () {
         _this.loadedImages.add("sprites");
       };
 
-      _images__WEBPACK_IMPORTED_MODULE_0__["hearts"].onload = function () {
+      _images__WEBPACK_IMPORTED_MODULE_2__["hearts"].onload = function () {
         _this.loadedImages.add("hearts");
       };
 
@@ -624,8 +629,10 @@ var GameView = /*#__PURE__*/function () {
     key: "animate",
     value: function animate() {
       if (!this.game.gameOver && this.loaded()) {
-        this.game.step(this.frameId);
+        this.game.step(this.ctx, this.frameId);
       }
+
+      if (this.game.gameOver) {}
 
       this.frameId = requestAnimationFrame(this.animate);
     }
@@ -820,8 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var canvas = document.getElementById("canvas");
   canvas.width = bound.width;
   canvas.height = bound.height;
-  var game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](canvas);
-  var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](game, canvas);
+  var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](canvas);
 });
 
 /***/ }),

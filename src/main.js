@@ -21,6 +21,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   canvas.width = bound.width;
   canvas.height = bound.height;
-  const game = new Game(canvas);
-  const gameView = new GameView(game, canvas);
+  const gameView = new GameView(canvas);
 });
