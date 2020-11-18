@@ -11,7 +11,8 @@ export class GameView {
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
     this.command = new Command(canvas, this.game);
-
+    this.gameOverMenu = document.getElementById("game-over");
+    this.finalText = document.getElementById("final");
     this.start();
   }
 
@@ -39,12 +40,12 @@ export class GameView {
       this.game.step(this.ctx, this.frameId);
     }
 
+    this.frameId = requestAnimationFrame(this.animate);
     if (this.game.gameOver) {
       console.log("game Over");
       cancelAnimationFrame(this.frameId);
-      this.gam;
+      this.gameOverMenu.classList.remove("hidden");
     }
-    this.frameId = requestAnimationFrame(this.animate);
   }
 
   loaded() {
@@ -53,5 +54,14 @@ export class GameView {
       this.loadedImages.has("sprites") &&
       this.loadedImages.has("hearts")
     );
+  }
+
+  restart() {
+    this.game = new Game(this.canvas);
+    this.command.game = this.game;
+    this.gameOverMenu.classList.add("hidden");
+    this.animate();
+    this.game.addMainChar();
+    this.startGame();
   }
 }

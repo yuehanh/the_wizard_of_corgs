@@ -17,6 +17,7 @@ export class Game {
     this.gameOver = false;
 
     this.MAX_ENEMY = 10;
+    debugger;
   }
 
   start() {
@@ -71,7 +72,7 @@ export class Game {
   }
 
   isLevelCompleted() {
-    if (this.enemies.length < 1 && this.levelStarted) {
+    if (this.enemies.length < 1 && this.levelStarted && !this.gameOver) {
       this.levelStarted = false;
       setTimeout(() => {
         this.startNewLevel();

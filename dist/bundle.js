@@ -419,6 +419,7 @@ var Game = /*#__PURE__*/function () {
     this.levelStarted = false;
     this.gameOver = false;
     this.MAX_ENEMY = 10;
+    debugger;
   }
 
   _createClass(Game, [{
@@ -506,7 +507,7 @@ var Game = /*#__PURE__*/function () {
     value: function isLevelCompleted() {
       var _this = this;
 
-      if (this.enemies.length < 1 && this.levelStarted) {
+      if (this.enemies.length < 1 && this.levelStarted && !this.gameOver) {
         this.levelStarted = false;
         setTimeout(function () {
           _this.startNewLevel();
@@ -611,6 +612,8 @@ var GameView = /*#__PURE__*/function () {
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
     this.command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this.game);
+    this.gameOverMenu = document.getElementById("game-over");
+    this.finalText = document.getElementById("final");
     this.start();
   }
 
@@ -646,18 +649,28 @@ var GameView = /*#__PURE__*/function () {
         this.game.step(this.ctx, this.frameId);
       }
 
+      this.frameId = requestAnimationFrame(this.animate);
+
       if (this.game.gameOver) {
         console.log("game Over");
         cancelAnimationFrame(this.frameId);
-        this.gam;
+        this.gameOverMenu.classList.remove("hidden");
       }
-
-      this.frameId = requestAnimationFrame(this.animate);
     }
   }, {
     key: "loaded",
     value: function loaded() {
       return this.loadedImages.has("corgi") && this.loadedImages.has("sprites") && this.loadedImages.has("hearts");
+    }
+  }, {
+    key: "restart",
+    value: function restart() {
+      this.game = new _game__WEBPACK_IMPORTED_MODULE_1__["Game"](this.canvas);
+      this.command.game = this.game;
+      this.gameOverMenu.classList.add("hidden");
+      this.animate();
+      this.game.addMainChar();
+      this.startGame();
     }
   }]);
 
@@ -844,11 +857,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var canvas = document.getElementById("canvas");
   var startBtn = document.getElementById("start-btn");
+  var restartBtn = document.getElementById("restart-btn");
   canvas.width = bound.width;
   canvas.height = bound.height;
   var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](canvas);
   startBtn.addEventListener("click", function () {
     gameView.startGame(), startBtn.classList.add("hidden");
+  });
+  restartBtn.addEventListener("click", function () {
+    gameView.restart();
   });
 });
 
