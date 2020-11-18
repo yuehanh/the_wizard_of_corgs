@@ -11,6 +11,7 @@ export class GameView {
     this.animate = this.animate.bind(this);
     this.loadedImages = new Set();
     this.command = new Command(canvas, this.game);
+
     this.start();
   }
 
@@ -25,8 +26,12 @@ export class GameView {
       this.loadedImages.add("hearts");
     };
     this.game.addMainChar();
-    this.game.start();
+
     this.animate();
+  }
+
+  startGame() {
+    this.game.start();
   }
 
   animate() {

@@ -632,8 +632,12 @@ var GameView = /*#__PURE__*/function () {
       };
 
       this.game.addMainChar();
-      this.game.start();
       this.animate();
+    }
+  }, {
+    key: "startGame",
+    value: function startGame() {
+      this.game.start();
     }
   }, {
     key: "animate",
@@ -839,9 +843,13 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   var canvas = document.getElementById("canvas");
+  var startBtn = document.getElementById("start-btn");
   canvas.width = bound.width;
   canvas.height = bound.height;
   var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](canvas);
+  startBtn.addEventListener("click", function () {
+    gameView.startGame(), startBtn.classList.add("hidden");
+  });
 });
 
 /***/ }),
