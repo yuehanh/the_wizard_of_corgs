@@ -485,6 +485,7 @@ var Game = /*#__PURE__*/function () {
     value: function step(ctx, frame) {
       this.draw(ctx, frame);
       this.move();
+      this.isGameOver();
     }
   }, {
     key: "move",
@@ -501,6 +502,13 @@ var Game = /*#__PURE__*/function () {
         _iterator2.e(err);
       } finally {
         _iterator2.f();
+      }
+    }
+  }, {
+    key: "isGameOver",
+    value: function isGameOver() {
+      if (this.mainChar.health <= 0) {
+        this.gameOver = true;
       }
     }
   }, {
@@ -632,7 +640,9 @@ var GameView = /*#__PURE__*/function () {
         this.game.step(this.ctx, this.frameId);
       }
 
-      if (this.game.gameOver) {}
+      if (this.game.gameOver) {
+        console.log("game Over");
+      }
 
       this.frameId = requestAnimationFrame(this.animate);
     }
@@ -854,7 +864,7 @@ var MainChar = /*#__PURE__*/function () {
   function MainChar(game, image) {
     _classCallCheck(this, MainChar);
 
-    this.health = 5;
+    this.health = 1;
     this.game = game;
     this.size = 100;
     this.OFFSET = 60;

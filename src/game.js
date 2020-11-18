@@ -69,6 +69,7 @@ export class Game {
   step(ctx, frame) {
     this.draw(ctx, frame);
     this.move();
+    this.isGameOver();
   }
 
   move() {
@@ -77,6 +78,11 @@ export class Game {
     }
   }
 
+  isGameOver() {
+    if (this.mainChar.health <= 0) {
+      this.gameOver = true;
+    }
+  }
   remove(obj) {
     let idx = this.enemies.indexOf(obj);
     this.enemies.splice(idx, 1);

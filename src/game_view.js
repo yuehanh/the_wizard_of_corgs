@@ -34,6 +34,7 @@ export class GameView {
     }
 
     if (this.game.gameOver) {
+      console.log("game Over");
     }
     this.frameId = requestAnimationFrame(this.animate);
   }

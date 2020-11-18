@@ -2,7 +2,7 @@ import { Vector } from "./vector";
 
 export class MainChar {
   constructor(game, image) {
-    this.health = 5;
+    this.health = 1;
     this.game = game;
     this.size = 100;
     this.OFFSET = 60;
