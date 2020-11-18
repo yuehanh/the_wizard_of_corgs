@@ -20,7 +20,6 @@ export class Game {
   }
 
   start() {
-    this.addMainChar();
     this.startNewLevel();
   }
 

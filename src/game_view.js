@@ -24,6 +24,7 @@ export class GameView {
     hearts.onload = () => {
       this.loadedImages.add("hearts");
     };
+    this.game.addMainChar();
     this.game.start();
     this.animate();
   }

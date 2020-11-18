@@ -422,7 +422,6 @@ var Game = /*#__PURE__*/function () {
   _createClass(Game, [{
     key: "start",
     value: function start() {
-      this.addMainChar();
       this.startNewLevel();
     }
   }, {
@@ -630,6 +629,7 @@ var GameView = /*#__PURE__*/function () {
         _this.loadedImages.add("hearts");
       };
 
+      this.game.addMainChar();
       this.game.start();
       this.animate();
     }
