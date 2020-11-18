@@ -23,7 +23,7 @@ export class HealthBar {
     this.width = this.enemy.health.length * this.SIZE;
     this.height = this.SIZE;
     this.y = this.enemy.pos.y - this.GAP - this.SIZE;
-    this.x = this.enemy.pos.x + this.enemy.width / 2 - this.width / 2;
+    this.x = this.enemy.pos.x + this.enemy.size / 2 - this.width / 2;
   }
   // x, y will always be the top left corner of the draw box
 

@@ -70,7 +70,7 @@ export class Command {
     this.yLast = mousePos.y;
 
     //starting position of visible path
-
+    this.beginPath();
     this.ctx.moveTo(this.xStart, this.yStart);
   }
 

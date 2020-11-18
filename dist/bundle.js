@@ -183,6 +183,7 @@ var Command = /*#__PURE__*/function () {
       this.xLast = mousePos.x;
       this.yLast = mousePos.y; //starting position of visible path
 
+      this.beginPath();
       this.ctx.moveTo(this.xStart, this.yStart);
     }
   }, {
@@ -294,11 +295,10 @@ var Enemy = /*#__PURE__*/function () {
     this.level = attr.level;
     this.health = [];
     this.game = attr.game;
-    this.width = attr.width;
-    this.height = attr.height;
+    this.size = attr.size;
     this.healthBar = new _health_bar__WEBPACK_IMPORTED_MODULE_0__["HealthBar"](this);
     this.mainChar = this.game.mainChar;
-    this.targetPos = this.mainChar.pos;
+    this.targetPos = this.mainChar.center;
     this.image = attr.image;
     this.status = true;
     this.init();
@@ -323,7 +323,7 @@ var Enemy = /*#__PURE__*/function () {
   }, {
     key: "draw",
     value: function draw(ctx, image, frame) {
-      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / 20) % 4), 0, 48, 48, this.pos.x, this.pos.y, this.width, this.height);
+      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / 20) % 6), 0, 48, 48, this.pos.x, this.pos.y, this.size, this.size);
       this.drawHealth(ctx);
     }
   }, {
@@ -364,7 +364,7 @@ var Enemy = /*#__PURE__*/function () {
     key: "isCollidedWith",
     value: function isCollidedWith() {
       var mainChar = this.mainChar;
-      return this.pos.x < mainChar.pos.x + mainChar.width && this.pos.x + this.width > mainChar.pos.x && this.pos.y < mainChar.pos.y + mainChar.height && this.pos.y + this.height > mainChar.pos.y;
+      return this.pos.x < mainChar.pos.x + mainChar.size && this.pos.x + this.size > mainChar.pos.x && this.pos.y < mainChar.pos.y + mainChar.size && this.pos.y + this.size > mainChar.pos.y;
     }
   }]);
 
@@ -441,32 +441,27 @@ var Game = /*#__PURE__*/function () {
       this.addEnemy({
         level: 1,
         game: this,
-        width: 40,
-        height: 40
+        size: 100
       });
       this.addEnemy({
         level: 2,
         game: this,
-        width: 40,
-        height: 40
+        size: 100
       });
       this.addEnemy({
         level: 3,
         game: this,
-        width: 40,
-        height: 40
+        size: 100
       });
       this.addEnemy({
         level: 4,
         game: this,
-        width: 40,
-        height: 40
+        size: 100
       });
       this.addEnemy({
         level: 5,
         game: this,
-        width: 40,
-        height: 40
+        size: 100
       });
       this.animate();
     }
@@ -544,6 +539,21 @@ var Game = /*#__PURE__*/function () {
         _iterator3.f();
       }
 
+      var _iterator4 = _createForOfIteratorHelper(this.enemies),
+          _step4;
+
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var _enemy = _step4.value;
+
+          _enemy.drawHealth(this.ctx);
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+
       this.mainChar.draw(this.ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], this.frameId);
       this.drawHearts();
     }
@@ -559,12 +569,12 @@ var Game = /*#__PURE__*/function () {
       var i = 0;
 
       while (i < this.mainChar.health) {
-        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 23, 10, 20, 20);
+        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
 
       while (i < this.maxHealth) {
-        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 23, 10, 20, 20);
+        this.ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
     }
@@ -628,7 +638,7 @@ var HealthBar = /*#__PURE__*/function () {
       this.width = this.enemy.health.length * this.SIZE;
       this.height = this.SIZE;
       this.y = this.enemy.pos.y - this.GAP - this.SIZE;
-      this.x = this.enemy.pos.x + this.enemy.width / 2 - this.width / 2;
+      this.x = this.enemy.pos.x + this.enemy.size / 2 - this.width / 2;
     } // x, y will always be the top left corner of the draw box
 
   }, {
@@ -787,12 +797,12 @@ var MainChar = /*#__PURE__*/function () {
   function MainChar(game, image) {
     _classCallCheck(this, MainChar);
 
-    this.OFFSET = 40;
     this.health = 5;
     this.game = game;
-    this.width = 60;
-    this.height = 60;
-    this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](game.width / 2 - this.width / 2, game.height - this.height - this.OFFSET);
+    this.size = 100;
+    this.OFFSET = 60;
+    this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](game.width / 2 - this.size / 2, game.height - this.size - this.OFFSET);
+    this.center = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](this.pos.x + this.size / 2, this.pos.y + this.size / 2);
     this.image = image;
     this.frameSpeed = 20;
   }
@@ -800,7 +810,8 @@ var MainChar = /*#__PURE__*/function () {
   _createClass(MainChar, [{
     key: "draw",
     value: function draw(ctx, image, frame) {
-      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / this.frameSpeed) % 3), 336, 48, 48, this.pos.x, this.pos.y, this.width, this.height); // this.drawHealth(ctx);
+      debugger;
+      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / this.frameSpeed) % 3), 336, 48, 48, this.pos.x, this.pos.y, this.size, this.size); // this.drawHealth(ctx);
     }
   }, {
     key: "hurt",

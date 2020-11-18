@@ -31,32 +31,27 @@ export class Game {
     this.addEnemy({
       level: 1,
       game: this,
-      width: 40,
-      height: 40,
+      size: 100,
     });
     this.addEnemy({
       level: 2,
       game: this,
-      width: 40,
-      height: 40,
+      size: 100,
     });
     this.addEnemy({
       level: 3,
       game: this,
-      width: 40,
-      height: 40,
+      size: 100,
     });
     this.addEnemy({
       level: 4,
       game: this,
-      width: 40,
-      height: 40,
+      size: 100,
     });
     this.addEnemy({
       level: 5,
       game: this,
-      width: 40,
-      height: 40,
+      size: 100,
     });
     this.animate();
   }
@@ -88,6 +83,9 @@ export class Game {
     this.ctx.clearRect(0, 0, this.width, this.height);
     for (const enemy of this.enemies) {
       enemy.draw(this.ctx, ghostSprites, this.frameId);
+    }
+    for (const enemy of this.enemies) {
+      enemy.drawHealth(this.ctx);
     }
     this.mainChar.draw(this.ctx, corgi, this.frameId);
     this.drawHearts();

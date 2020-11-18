@@ -6,11 +6,10 @@ export class Enemy {
     this.level = attr.level;
     this.health = [];
     this.game = attr.game;
-    this.width = attr.width;
-    this.height = attr.height;
+    this.size = attr.size;
     this.healthBar = new HealthBar(this);
     this.mainChar = this.game.mainChar;
-    this.targetPos = this.mainChar.pos;
+    this.targetPos = this.mainChar.center;
     this.image = attr.image;
     this.status = true;
     this.init();
@@ -32,14 +31,14 @@ export class Enemy {
   draw(ctx, image, frame) {
     ctx.drawImage(
       image,
-      0 + 48 * (Math.floor(frame / 20) % 4),
+      0 + 48 * (Math.floor(frame / 20) % 6),
       0,
       48,
       48,
       this.pos.x,
       this.pos.y,
-      this.width,
-      this.height
+      this.size,
+      this.size
     );
 
     this.drawHealth(ctx);
@@ -76,10 +75,10 @@ export class Enemy {
   isCollidedWith() {
     const mainChar = this.mainChar;
     return (
-      this.pos.x < mainChar.pos.x + mainChar.width &&
-      this.pos.x + this.width > mainChar.pos.x &&
-      this.pos.y < mainChar.pos.y + mainChar.height &&
-      this.pos.y + this.height > mainChar.pos.y
+      this.pos.x < mainChar.pos.x + mainChar.size &&
+      this.pos.x + this.size > mainChar.pos.x &&
+      this.pos.y < mainChar.pos.y + mainChar.size &&
+      this.pos.y + this.size > mainChar.pos.y
     );
   }
 }
