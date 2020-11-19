@@ -317,6 +317,7 @@ var DummyEnemy = /*#__PURE__*/function (_Enemy) {
     _this = _super.call(this, dummyAttr);
     _this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](attr.game.width / 2 - _this.size / 2, 150);
     _this.vel = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](0, 0);
+    _this.value = 0;
     return _this;
   }
 
@@ -442,11 +443,10 @@ var Enemy = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
-/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./command */ "./src/command.js");
-/* harmony import */ var _dummy_enemy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dummy_enemy */ "./src/dummy_enemy.js");
-/* harmony import */ var _enemies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./enemies */ "./src/enemies.js");
-/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./images */ "./src/images.js");
-/* harmony import */ var _main_char__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./main_char */ "./src/main_char.js");
+/* harmony import */ var _dummy_enemy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dummy_enemy */ "./src/dummy_enemy.js");
+/* harmony import */ var _enemies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./enemies */ "./src/enemies.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./images */ "./src/images.js");
+/* harmony import */ var _main_char__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./main_char */ "./src/main_char.js");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -458,7 +458,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -495,12 +494,12 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "addMainChar",
     value: function addMainChar() {
-      this.mainChar = new _main_char__WEBPACK_IMPORTED_MODULE_4__["MainChar"](this, _images__WEBPACK_IMPORTED_MODULE_3__["corgi"]);
+      this.mainChar = new _main_char__WEBPACK_IMPORTED_MODULE_3__["MainChar"](this, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"]);
     }
   }, {
     key: "addDummyEnemy",
     value: function addDummyEnemy() {
-      var enemy = new _dummy_enemy__WEBPACK_IMPORTED_MODULE_1__["DummyEnemy"]({
+      var enemy = new _dummy_enemy__WEBPACK_IMPORTED_MODULE_0__["DummyEnemy"]({
         game: this
       });
       this.enemies.push(enemy);
@@ -515,7 +514,7 @@ var Game = /*#__PURE__*/function () {
       };
 
       for (var i = 0; i < enemyNum; i++) {
-        var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_2__["Enemy"](attr);
+        var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_1__["Enemy"](attr);
         this.enemies.push(enemy);
       }
     }
@@ -598,7 +597,7 @@ var Game = /*#__PURE__*/function () {
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var enemy = _step3.value;
-          enemy.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_3__["ghostSprites"], frame);
+          enemy.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], frame);
         }
       } catch (err) {
         _iterator3.e(err);
@@ -621,7 +620,7 @@ var Game = /*#__PURE__*/function () {
         _iterator4.f();
       }
 
-      this.mainChar.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_3__["corgi"], frame);
+      this.mainChar.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], frame);
       this.drawHearts(ctx);
     }
   }, {
@@ -630,12 +629,12 @@ var Game = /*#__PURE__*/function () {
       var i = 0;
 
       while (i < this.mainChar.health) {
-        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_3__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
 
       while (i < this.maxHealth) {
-        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_3__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
     }
@@ -908,10 +907,8 @@ hearts.src = "./dist/image/hearts.png";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/game.js");
-/* harmony import */ var _game_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
-/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./images */ "./src/images.js");
-
+/* harmony import */ var _game_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./images */ "./src/images.js");
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -920,20 +917,22 @@ document.addEventListener("DOMContentLoaded", function () {
   backgroundCanvas.width = bound.width;
   backgroundCanvas.width = bound.height;
 
-  _images__WEBPACK_IMPORTED_MODULE_2__["background"].onload = function () {
+  _images__WEBPACK_IMPORTED_MODULE_1__["background"].onload = function () {
     var backgroundCtx = backgroundCanvas.getContext("2d");
-    backgroundCtx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["background"], 0, 0, backgroundCanvas.width, backgroundCanvas.height);
+    backgroundCtx.drawImage(_images__WEBPACK_IMPORTED_MODULE_1__["background"], 0, 0, backgroundCanvas.width, backgroundCanvas.height);
   };
 
   var canvas = document.getElementById("canvas");
   var startBtn = document.getElementById("start-btn");
   var restartBtn = document.getElementById("restart-btn");
+  var music = document.getElementById("music");
   canvas.width = bound.width;
   canvas.height = bound.height;
-  var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](canvas);
+  var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_0__["GameView"](canvas);
   startBtn.classList.remove("hidden");
   startBtn.addEventListener("click", function () {
     gameView.startGame(), startBtn.classList.add("hidden");
+    music.play();
   });
   restartBtn.addEventListener("click", function () {
     gameView.restart();
