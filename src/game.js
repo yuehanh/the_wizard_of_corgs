@@ -17,7 +17,6 @@ export class Game {
     this.gameOver = false;
 
     this.MAX_ENEMY = 10;
-    debugger;
   }
 
   start() {
@@ -67,6 +66,7 @@ export class Game {
 
   isGameOver() {
     if (this.mainChar.health <= 0) {
+      this.enemies = [];
       this.gameOver = true;
     }
   }
@@ -76,7 +76,7 @@ export class Game {
       this.levelStarted = false;
       setTimeout(() => {
         this.startNewLevel();
-      }, 3000);
+      }, 2000);
     }
   }
   remove(obj) {
