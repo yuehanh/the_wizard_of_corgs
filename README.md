@@ -117,3 +117,7 @@ The combination of these 8 directions can later be passed to a command interpret
    }
  }
 ```
+
+---
+
+### Feel free to send me an <a href="mailto:yuehan.huang@protonmail.com">message</a>!
