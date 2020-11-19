@@ -400,6 +400,7 @@ var Enemy = /*#__PURE__*/function () {
     value: function update(direction) {
       if (direction === this.health[0]) {
         this.health = this.health.slice(1);
+        this.game.strike = true;
       }
 
       if (this.health.length === 0) {
@@ -469,6 +470,8 @@ var Game = /*#__PURE__*/function () {
     this.gameOver = false;
     this.MAX_ENEMY = 10;
     this.pause = false;
+    this.strike = false;
+    this.spellSound = document.getElementById("spell");
   }
 
   _createClass(Game, [{
@@ -527,6 +530,11 @@ var Game = /*#__PURE__*/function () {
         } finally {
           _iterator.f();
         }
+      }
+
+      if (this.strike) {
+        this.strike = false;
+        this.spellSound.play();
       }
     }
   }, {

@@ -64,6 +64,7 @@ export class Enemy {
   update(direction) {
     if (direction === this.health[0]) {
       this.health = this.health.slice(1);
+      this.game.strike = true;
     }
     if (this.health.length === 0) {
       this.status = false;

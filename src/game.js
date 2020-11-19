@@ -18,6 +18,8 @@ export class Game {
 
     this.MAX_ENEMY = 10;
     this.pause = false;
+    this.strike = false;
+    this.spellSound = document.getElementById("spell");
   }
 
   start() {
@@ -56,6 +58,10 @@ export class Game {
       for (const enemy of this.enemies) {
         enemy.update(direction);
       }
+    }
+    if (this.strike) {
+      this.strike = false;
+      this.spellSound.play();
     }
   }
 
