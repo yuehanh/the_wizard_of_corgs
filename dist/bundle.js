@@ -118,8 +118,7 @@ var Command = /*#__PURE__*/function () {
     this.directions = [];
     this.isMouseDown = false;
     this.tmpCanvas = null;
-    this.lineWidth = pathStyle.lineWidth || 5;
-    this.strokeStyle = pathStyle.strokeStyle || "red";
+    this.lineWidth = pathStyle.lineWidth || 1;
     this.muteBtn = document.getElementById("mute-btn");
     this.addInputListener();
   }
@@ -183,7 +182,13 @@ var Command = /*#__PURE__*/function () {
         this.xCurrent = mousePos.x;
         this.yCurrent = mousePos.y;
         this.ctx.lineWidth = this.lineWidth;
-        this.ctx.strokeStyle = this.strokeStyle;
+        var gradient = this.ctx.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
+        gradient.addColorStop("0", "magenta");
+        gradient.addColorStop("0.5", "cyan");
+        gradient.addColorStop("1.0", "red");
+        this.ctx.shadowColor = "rgb(144,238,144)";
+        this.ctx.shadowBlur = 20;
+        this.ctx.strokeStyle = gradient;
         this.ctx.lineTo(this.xCurrent, this.yCurrent);
         this.ctx.stroke();
         var dx = this.xCurrent - this.xLast;
