@@ -268,6 +268,63 @@ var Command = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/dummy_enemy.js":
+/*!****************************!*\
+  !*** ./src/dummy_enemy.js ***!
+  \****************************/
+/*! exports provided: DummyEnemy */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DummyEnemy", function() { return DummyEnemy; });
+/* harmony import */ var _enemies__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./enemies */ "./src/enemies.js");
+/* harmony import */ var _vector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vector */ "./src/vector.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var DummyEnemy = /*#__PURE__*/function (_Enemy) {
+  _inherits(DummyEnemy, _Enemy);
+
+  var _super = _createSuper(DummyEnemy);
+
+  function DummyEnemy(attr) {
+    var _this;
+
+    _classCallCheck(this, DummyEnemy);
+
+    var dummyAttr = {
+      level: 1,
+      game: attr.game
+    };
+    _this = _super.call(this, dummyAttr);
+    _this.pos = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](attr.game.width / 2 - _this.size / 2, 150);
+    _this.vel = new _vector__WEBPACK_IMPORTED_MODULE_1__["Vector"](0, 0);
+    return _this;
+  }
+
+  return DummyEnemy;
+}(_enemies__WEBPACK_IMPORTED_MODULE_0__["Enemy"]);
+
+/***/ }),
+
 /***/ "./src/enemies.js":
 /*!************************!*\
   !*** ./src/enemies.js ***!
@@ -386,9 +443,10 @@ var Enemy = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
 /* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./command */ "./src/command.js");
-/* harmony import */ var _enemies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./enemies */ "./src/enemies.js");
-/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./images */ "./src/images.js");
-/* harmony import */ var _main_char__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./main_char */ "./src/main_char.js");
+/* harmony import */ var _dummy_enemy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dummy_enemy */ "./src/dummy_enemy.js");
+/* harmony import */ var _enemies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./enemies */ "./src/enemies.js");
+/* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./images */ "./src/images.js");
+/* harmony import */ var _main_char__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./main_char */ "./src/main_char.js");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -400,6 +458,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -419,7 +478,6 @@ var Game = /*#__PURE__*/function () {
     this.levelStarted = false;
     this.gameOver = false;
     this.MAX_ENEMY = 10;
-    debugger;
   }
 
   _createClass(Game, [{
@@ -437,7 +495,15 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "addMainChar",
     value: function addMainChar() {
-      this.mainChar = new _main_char__WEBPACK_IMPORTED_MODULE_3__["MainChar"](this, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"]);
+      this.mainChar = new _main_char__WEBPACK_IMPORTED_MODULE_4__["MainChar"](this, _images__WEBPACK_IMPORTED_MODULE_3__["corgi"]);
+    }
+  }, {
+    key: "addDummyEnemy",
+    value: function addDummyEnemy() {
+      var enemy = new _dummy_enemy__WEBPACK_IMPORTED_MODULE_1__["DummyEnemy"]({
+        game: this
+      });
+      this.enemies.push(enemy);
     }
   }, {
     key: "addEnemy",
@@ -449,7 +515,7 @@ var Game = /*#__PURE__*/function () {
       };
 
       for (var i = 0; i < enemyNum; i++) {
-        var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_1__["Enemy"](attr);
+        var enemy = new _enemies__WEBPACK_IMPORTED_MODULE_2__["Enemy"](attr);
         this.enemies.push(enemy);
       }
     }
@@ -499,6 +565,7 @@ var Game = /*#__PURE__*/function () {
     key: "isGameOver",
     value: function isGameOver() {
       if (this.mainChar.health <= 0) {
+        this.enemies = [];
         this.gameOver = true;
       }
     }
@@ -511,7 +578,7 @@ var Game = /*#__PURE__*/function () {
         this.levelStarted = false;
         setTimeout(function () {
           _this.startNewLevel();
-        }, 3000);
+        }, 2000);
       }
     }
   }, {
@@ -531,7 +598,7 @@ var Game = /*#__PURE__*/function () {
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var enemy = _step3.value;
-          enemy.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_2__["ghostSprites"], frame);
+          enemy.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_3__["ghostSprites"], frame);
         }
       } catch (err) {
         _iterator3.e(err);
@@ -554,7 +621,7 @@ var Game = /*#__PURE__*/function () {
         _iterator4.f();
       }
 
-      this.mainChar.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_2__["corgi"], frame);
+      this.mainChar.draw(ctx, _images__WEBPACK_IMPORTED_MODULE_3__["corgi"], frame);
       this.drawHearts(ctx);
     }
   }, {
@@ -563,12 +630,12 @@ var Game = /*#__PURE__*/function () {
       var i = 0;
 
       while (i < this.mainChar.health) {
-        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_3__["hearts"], 0, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
 
       while (i < this.maxHealth) {
-        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_2__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
+        ctx.drawImage(_images__WEBPACK_IMPORTED_MODULE_3__["hearts"], 17 * 4, 0, 17, 17, 10 + i * 43, 10, 40, 40);
         i++;
       }
     }
@@ -613,7 +680,8 @@ var GameView = /*#__PURE__*/function () {
     this.loadedImages = new Set();
     this.command = new _command__WEBPACK_IMPORTED_MODULE_0__["Command"](canvas, this.game);
     this.gameOverMenu = document.getElementById("game-over");
-    this.finalText = document.getElementById("final");
+    this.finalScore = document.getElementById("final-score");
+    this.score = document.getElementById("score");
     this.start();
   }
 
@@ -635,6 +703,7 @@ var GameView = /*#__PURE__*/function () {
       };
 
       this.game.addMainChar();
+      this.game.addDummyEnemy();
       this.animate();
     }
   }, {
@@ -650,10 +719,11 @@ var GameView = /*#__PURE__*/function () {
       }
 
       this.frameId = requestAnimationFrame(this.animate);
+      this.score.innerText = this.game.score;
 
       if (this.game.gameOver) {
-        console.log("game Over");
         cancelAnimationFrame(this.frameId);
+        this.finalScore.innerText = this.game.score;
         this.gameOverMenu.classList.remove("hidden");
       }
     }
@@ -668,8 +738,8 @@ var GameView = /*#__PURE__*/function () {
       this.game = new _game__WEBPACK_IMPORTED_MODULE_1__["Game"](this.canvas);
       this.command.game = this.game;
       this.gameOverMenu.classList.add("hidden");
-      this.animate();
       this.game.addMainChar();
+      this.animate();
       this.startGame();
     }
   }]);
@@ -861,6 +931,7 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = bound.width;
   canvas.height = bound.height;
   var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](canvas);
+  startBtn.classList.remove("hidden");
   startBtn.addEventListener("click", function () {
     gameView.startGame(), startBtn.classList.add("hidden");
   });

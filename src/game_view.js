@@ -28,6 +28,7 @@ export class GameView {
       this.loadedImages.add("hearts");
     };
     this.game.addMainChar();
+    this.game.addDummyEnemy();
 
     this.animate();
   }

@@ -1,4 +1,5 @@
 import { Command } from "./command";
+import { DummyEnemy } from "./dummy_enemy";
 import { Enemy } from "./enemies";
 import { corgi, ghostSprites, hearts } from "./images";
 import { MainChar } from "./main_char";
@@ -33,6 +34,11 @@ export class Game {
     this.mainChar = new MainChar(this, corgi);
   }
 
+  addDummyEnemy() {
+    const enemy = new DummyEnemy({ game: this });
+    this.enemies.push(enemy);
+  }
+  
   addEnemy() {
     const enemyNum = Math.min(this.level, this.MAX_ENEMY);
     const attr = {

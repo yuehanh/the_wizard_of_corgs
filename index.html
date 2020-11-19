@@ -17,15 +17,17 @@
     <div id="main">
       <h1>The Wizard of the Corgs</h1>
       <div id="canvas-container">
+        <div id="score-card">Score: <span id="score">0</span></div>
         <canvas id="background-canvas"></canvas>
         <canvas id="canvas"
           >Your browser dosen't support the HTML5 canvas.</canvas
         >
         <div id="start" class="game-menu">
-          <span id="start-btn" class="game-btn">Start</span>
+          <span id="start-btn" class="game-btn hidden">Start</span>
         </div>
         <div id="game-over" class="game-menu hidden">
-          <span id="final">Final Score 20</span>
+          <span id="final">Game Over</span></span>
+          <span id="final">Final Score <span id="final-score">0</span></span>
           <span id="restart-btn" class="game-btn">Play Again</span>
         </div>
       </div>
