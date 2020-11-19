@@ -12,7 +12,7 @@ export class Command {
 
     this.lineWidth = pathStyle.lineWidth || 5;
     this.strokeStyle = pathStyle.strokeStyle || "red";
-
+    this.muteBtn = document.getElementById("mute-btn");
     this.addInputListener();
   }
 

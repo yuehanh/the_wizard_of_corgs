@@ -45,13 +45,15 @@ p {
 .game-controllers {
   padding-top: 10px;
   padding-bottom: 50px;
-  /* width: 50%; */
-  /* display: flex; */
-  /* justify-content: space-around; */
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
 }
 
 .game-controllers span {
   padding: 10px;
+  text-align: center;
+  width: 150px;
 }
 #canvas,
 #background-canvas,

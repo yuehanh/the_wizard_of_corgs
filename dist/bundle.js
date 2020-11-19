@@ -120,6 +120,7 @@ var Command = /*#__PURE__*/function () {
     this.tmpCanvas = null;
     this.lineWidth = pathStyle.lineWidth || 5;
     this.strokeStyle = pathStyle.strokeStyle || "red";
+    this.muteBtn = document.getElementById("mute-btn");
     this.addInputListener();
   }
 
@@ -669,7 +670,6 @@ var GameView = /*#__PURE__*/function () {
     this.gameOverMenu = document.getElementById("game-over");
     this.finalScore = document.getElementById("final-score");
     this.score = document.getElementById("score");
-    this.pauseBtn = document.getElementById("pause-btn");
     this.pause = false;
     this.start();
   }
@@ -703,15 +703,19 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "toggleGame",
     value: function toggleGame() {
-      debugger;
+      var text;
 
       if (this.pause) {
         this.pause = false;
+        text = "Pause";
         this.animate();
       } else {
         this.pause = true;
+        text = "Resume";
         cancelAnimationFrame(this.frameId);
       }
+
+      return text;
     }
   }, {
     key: "animate",
@@ -929,6 +933,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var startBtn = document.getElementById("start-btn");
   var restartBtn = document.getElementById("restart-btn");
   var muteBtn = document.getElementById("mute-btn");
+  var pauseBtn = document.getElementById("pause-btn");
   var music = document.getElementById("music");
   var controllers = document.getElementById("controllers");
   canvas.width = bound.width;
@@ -959,8 +964,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
       case "p":
       case " ":
-        gameView.toggleGame();
+        debugger;
+        pauseBtn.innerText = gameView.toggleGame();
     }
+  });
+  muteBtn.addEventListener("mousedown", function (e) {
+    e.stopPropagation();
+
+    if (music.paused) {
+      music.play();
+      muteBtn.innerText = "Mute";
+    } else {
+      music.pause();
+      muteBtn.innerText = "Unmute";
+    }
+  });
+  pauseBtn.addEventListener("mousedown", function (e) {
+    e.stopPropagation();
+    pauseBtn.innerText = gameView.toggleGame();
   });
 });
 

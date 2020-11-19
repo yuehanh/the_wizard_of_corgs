@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-btn");
   const restartBtn = document.getElementById("restart-btn");
   const muteBtn = document.getElementById("mute-btn");
+  const pauseBtn = document.getElementById("pause-btn");
   const music = document.getElementById("music");
 
   const controllers = document.getElementById("controllers");
@@ -52,7 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "p":
       case " ":
-        gameView.toggleGame();
+        debugger;
+        pauseBtn.innerText = gameView.toggleGame();
     }
+  });
+
+  muteBtn.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+    if (music.paused) {
+      music.play();
+      muteBtn.innerText = "Mute";
+    } else {
+      music.pause();
+      muteBtn.innerText = "Unmute";
+    }
+  });
+
+  pauseBtn.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+    pauseBtn.innerText = gameView.toggleGame();
   });
 });
