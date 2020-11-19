@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const muteBtn = document.getElementById("mute-btn");
   const pauseBtn = document.getElementById("pause-btn");
   const music = document.getElementById("music");
+  const links = document.getElementById("links");
 
   const controllers = document.getElementById("controllers");
   canvas.width = bound.width;
@@ -72,5 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
   pauseBtn.addEventListener("mousedown", (e) => {
     e.stopPropagation();
     pauseBtn.innerText = gameView.toggleGame();
+  });
+
+  links.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
   });
 });

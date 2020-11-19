@@ -19,10 +19,29 @@ h1 {
   color: gold;
   font-size: 2rem;
   text-align: center;
-  margin: 50px;
+  margin-top: 50px;
+
   position: relative;
 }
+.profile-link-group {
+  position: relative;
+  font: white;
+  margin: 20px;
+  font-size: 50px;
+  display: flex;
+  width: 150px;
+  justify-content: space-around;
+}
 
+a {
+  transition: all 1s ease-in-out;
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  color: gold;
+}
 #text {
   border: 3px solid white;
   width: 100%;

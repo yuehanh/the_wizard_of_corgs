@@ -935,6 +935,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var muteBtn = document.getElementById("mute-btn");
   var pauseBtn = document.getElementById("pause-btn");
   var music = document.getElementById("music");
+  var links = document.getElementById("links");
   var controllers = document.getElementById("controllers");
   canvas.width = bound.width;
   canvas.height = bound.height;
@@ -982,6 +983,9 @@ document.addEventListener("DOMContentLoaded", function () {
   pauseBtn.addEventListener("mousedown", function (e) {
     e.stopPropagation();
     pauseBtn.innerText = gameView.toggleGame();
+  });
+  links.addEventListener("mousedown", function (e) {
+    e.stopPropagation();
   });
 });
 
