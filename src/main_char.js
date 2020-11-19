@@ -11,6 +11,12 @@ export class MainChar {
       game.height - this.size - this.OFFSET
     );
 
+    this.hitBoxSize = (this.size * 3) / 4;
+    this.hitBoxPos = new Vector(
+      game.width / 2 - this.hitBoxSize / 2,
+      game.height - this.hitBoxSize - this.OFFSET
+    );
+
     this.center = new Vector(
       this.pos.x + this.size / 2,
       this.pos.y + this.size / 2
@@ -31,7 +37,6 @@ export class MainChar {
       this.size,
       this.size
     );
-    // this.drawHealth(ctx);
   }
 
   hurt() {

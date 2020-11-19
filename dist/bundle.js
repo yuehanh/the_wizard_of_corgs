@@ -416,7 +416,9 @@ var Enemy = /*#__PURE__*/function () {
     key: "isCollidedWith",
     value: function isCollidedWith() {
       var mainChar = this.mainChar;
-      return this.pos.x < mainChar.pos.x + mainChar.size && this.pos.x + this.size > mainChar.pos.x && this.pos.y < mainChar.pos.y + mainChar.size && this.pos.y + this.size > mainChar.pos.y;
+      var hitBoxPos = mainChar.hitBoxPos;
+      var hitBoxSize = mainChar.hitBoxSize;
+      return this.pos.x < hitBoxPos.x + hitBoxSize && this.pos.x + this.size > hitBoxPos.x && this.pos.y < hitBoxPos.y + hitBoxSize && this.pos.y + this.size > hitBoxPos.y;
     }
   }]);
 
@@ -1031,6 +1033,8 @@ var MainChar = /*#__PURE__*/function () {
     this.size = 100;
     this.OFFSET = 60;
     this.pos = new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](game.width / 2 - this.size / 2, game.height - this.size - this.OFFSET);
+    this.hitBoxSize = this.size * 3 / 4;
+    this.hitBoxPos = new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](game.width / 2 - this.hitBoxSize / 2, game.height - this.hitBoxSize - this.OFFSET);
     this.center = new _vector__WEBPACK_IMPORTED_MODULE_0__["Vector"](this.pos.x + this.size / 2, this.pos.y + this.size / 2);
     this.image = image;
     this.frameSpeed = 20;
@@ -1039,7 +1043,7 @@ var MainChar = /*#__PURE__*/function () {
   _createClass(MainChar, [{
     key: "draw",
     value: function draw(ctx, image, frame) {
-      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / this.frameSpeed) % 3), 336, 48, 48, this.pos.x, this.pos.y, this.size, this.size); // this.drawHealth(ctx);
+      ctx.drawImage(image, 0 + 48 * (Math.floor(frame / this.frameSpeed) % 3), 336, 48, 48, this.pos.x, this.pos.y, this.size, this.size);
     }
   }, {
     key: "hurt",

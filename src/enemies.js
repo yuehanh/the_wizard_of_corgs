@@ -77,11 +77,14 @@ export class Enemy {
 
   isCollidedWith() {
     const mainChar = this.mainChar;
+    const hitBoxPos = mainChar.hitBoxPos;
+    const hitBoxSize = mainChar.hitBoxSize;
+
     return (
-      this.pos.x < mainChar.pos.x + mainChar.size &&
-      this.pos.x + this.size > mainChar.pos.x &&
-      this.pos.y < mainChar.pos.y + mainChar.size &&
-      this.pos.y + this.size > mainChar.pos.y
+      this.pos.x < hitBoxPos.x + hitBoxSize &&
+      this.pos.x + this.size > hitBoxPos.x &&
+      this.pos.y < hitBoxPos.y + hitBoxSize &&
+      this.pos.y + this.size > hitBoxPos.y
     );
   }
 }
