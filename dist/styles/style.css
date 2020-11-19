@@ -29,11 +29,21 @@ h1 {
   margin: 20px;
   font-size: 50px;
   display: flex;
-  width: 150px;
+  width: 400px;
   justify-content: space-around;
 }
 
+.profile-link-group div {
+  margin: auto;
+  text-align: center;
+  font-size: 10px;
+  line-height: 20px;
+}
+
+
+
 a {
+  margin: auto;
   transition: all 1s ease-in-out;
   text-decoration: none;
   color: white;
