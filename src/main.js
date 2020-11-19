@@ -40,17 +40,19 @@ document.addEventListener("DOMContentLoaded", () => {
     gameView.restart();
   });
 
-  muteBtn.addEventListener("click", () => {
-    if (music.paused) {
-      music.play();
-      console.log("unmute");
-      muteBtn.innerText = "Mute";
-    } else {
-      music.pause();
-      console.log("mute");
-      muteBtn.innerText = "Unmute";
+  document.addEventListener("keydown", (e) => {
+    e.preventDefault();
+    switch (e.key) {
+      case "m":
+        if (music.paused) {
+          music.play();
+        } else {
+          music.pause();
+        }
+        break;
+      case "p":
+      case " ":
+        gameView.toggleGame();
     }
   });
-  window.muteBtn = muteBtn;
-  window.music = music;
 });

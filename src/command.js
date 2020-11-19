@@ -32,19 +32,6 @@ export class Command {
     this.canvas.oncontextmenu = function (e) {
       e.preventDefault();
     };
-
-    // document.addEventListener("touchstart", (e) => {
-    //   e.preventDefault();
-    //   this.handleMouseDown(e);
-    // });
-    // document.addEventListener("touchmove", (e) => {
-    //   e.preventDefault();
-    //   this.handleMouseMove(e);
-    // });
-    // document.addEventListener("touchend", (e) => {
-    //   e.preventDefault();
-    //   this.handleMouseUp(e);
-    // });
   }
 
   handleMouseDown(e) {

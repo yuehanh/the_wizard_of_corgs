@@ -146,19 +146,7 @@ var Command = /*#__PURE__*/function () {
 
       this.canvas.oncontextmenu = function (e) {
         e.preventDefault();
-      }; // document.addEventListener("touchstart", (e) => {
-      //   e.preventDefault();
-      //   this.handleMouseDown(e);
-      // });
-      // document.addEventListener("touchmove", (e) => {
-      //   e.preventDefault();
-      //   this.handleMouseMove(e);
-      // });
-      // document.addEventListener("touchend", (e) => {
-      //   e.preventDefault();
-      //   this.handleMouseUp(e);
-      // });
-
+      };
     }
   }, {
     key: "handleMouseDown",
@@ -705,22 +693,25 @@ var GameView = /*#__PURE__*/function () {
 
       this.game.addMainChar();
       this.game.addDummyEnemy();
-      this.pauseBtn.addEventListener("click", function () {
-        if (_this.pause) {
-          _this.pause = false;
-
-          _this.animate();
-        } else {
-          _this.pause = true;
-          cancelAnimationFrame(_this.frameId);
-        }
-      });
       this.animate();
     }
   }, {
     key: "startGame",
     value: function startGame() {
       this.game.start();
+    }
+  }, {
+    key: "toggleGame",
+    value: function toggleGame() {
+      debugger;
+
+      if (this.pause) {
+        this.pause = false;
+        this.animate();
+      } else {
+        this.pause = true;
+        cancelAnimationFrame(this.frameId);
+      }
     }
   }, {
     key: "animate",
@@ -953,19 +944,24 @@ document.addEventListener("DOMContentLoaded", function () {
   restartBtn.addEventListener("click", function () {
     gameView.restart();
   });
-  muteBtn.addEventListener("click", function () {
-    if (music.paused) {
-      music.play();
-      console.log("unmute");
-      muteBtn.innerText = "Mute";
-    } else {
-      music.pause();
-      console.log("mute");
-      muteBtn.innerText = "Unmute";
+  document.addEventListener("keydown", function (e) {
+    e.preventDefault();
+
+    switch (e.key) {
+      case "m":
+        if (music.paused) {
+          music.play();
+        } else {
+          music.pause();
+        }
+
+        break;
+
+      case "p":
+      case " ":
+        gameView.toggleGame();
     }
   });
-  window.muteBtn = muteBtn;
-  window.music = music;
 });
 
 /***/ }),

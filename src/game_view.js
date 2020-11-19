@@ -31,20 +31,23 @@ export class GameView {
     };
     this.game.addMainChar();
     this.game.addDummyEnemy();
-    this.pauseBtn.addEventListener("click", () => {
-      if (this.pause) {
-        this.pause = false;
-        this.animate();
-      } else {
-        this.pause = true;
-        cancelAnimationFrame(this.frameId);
-      }
-    });
+
     this.animate();
   }
 
   startGame() {
     this.game.start();
+  }
+
+  toggleGame() {
+    debugger;
+    if (this.pause) {
+      this.pause = false;
+      this.animate();
+    } else {
+      this.pause = true;
+      cancelAnimationFrame(this.frameId);
+    }
   }
 
   animate() {
