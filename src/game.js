@@ -17,6 +17,7 @@ export class Game {
     this.gameOver = false;
 
     this.MAX_ENEMY = 10;
+    this.pause = false;
   }
 
   start() {
@@ -51,8 +52,10 @@ export class Game {
   }
 
   receiveCommand(direction) {
-    for (const enemy of this.enemies) {
-      enemy.update(direction);
+    if (!this.pause) {
+      for (const enemy of this.enemies) {
+        enemy.update(direction);
+      }
     }
   }
 

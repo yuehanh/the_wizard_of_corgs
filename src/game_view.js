@@ -40,12 +40,12 @@ export class GameView {
 
   toggleGame() {
     let text;
-    if (this.pause) {
-      this.pause = false;
+    if (this.game.pause) {
+      this.game.pause = false;
       text = "Pause";
       this.animate();
     } else {
-      this.pause = true;
+      this.game.pause = true;
       text = "Resume";
       cancelAnimationFrame(this.frameId);
     }

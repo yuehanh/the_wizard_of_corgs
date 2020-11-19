@@ -468,6 +468,7 @@ var Game = /*#__PURE__*/function () {
     this.levelStarted = false;
     this.gameOver = false;
     this.MAX_ENEMY = 10;
+    this.pause = false;
   }
 
   _createClass(Game, [{
@@ -512,18 +513,20 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "receiveCommand",
     value: function receiveCommand(direction) {
-      var _iterator = _createForOfIteratorHelper(this.enemies),
-          _step;
+      if (!this.pause) {
+        var _iterator = _createForOfIteratorHelper(this.enemies),
+            _step;
 
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var enemy = _step.value;
-          enemy.update(direction);
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var enemy = _step.value;
+            enemy.update(direction);
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
         }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
       }
     }
   }, {
@@ -707,12 +710,12 @@ var GameView = /*#__PURE__*/function () {
     value: function toggleGame() {
       var text;
 
-      if (this.pause) {
-        this.pause = false;
+      if (this.game.pause) {
+        this.game.pause = false;
         text = "Pause";
         this.animate();
       } else {
-        this.pause = true;
+        this.game.pause = true;
         text = "Resume";
         cancelAnimationFrame(this.frameId);
       }
