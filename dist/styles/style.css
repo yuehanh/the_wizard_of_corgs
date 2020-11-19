@@ -40,8 +40,6 @@ h1 {
   line-height: 20px;
 }
 
-
-
 a {
   margin: auto;
   transition: all 1s ease-in-out;
@@ -129,9 +127,12 @@ p {
 }
 
 .game-btn:hover {
+  opacity: 0.5;
+}
+
+.game-btn:active {
   border: none;
   box-shadow: none;
-  opacity: 0.5;
   transform: translate(2px, 3px);
 }
 
