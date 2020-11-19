@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   canvas.width = bound.width;
   canvas.height = bound.height;
   const gameView = new GameView(canvas);
-
+  startBtn.classList.remove("hidden");
   startBtn.addEventListener("click", () => {
     gameView.startGame(), startBtn.classList.add("hidden");
   });
