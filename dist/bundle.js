@@ -681,6 +681,8 @@ var GameView = /*#__PURE__*/function () {
     this.gameOverMenu = document.getElementById("game-over");
     this.finalScore = document.getElementById("final-score");
     this.score = document.getElementById("score");
+    this.pauseBtn = document.getElementById("pause-btn");
+    this.pause = false;
     this.start();
   }
 
@@ -703,6 +705,16 @@ var GameView = /*#__PURE__*/function () {
 
       this.game.addMainChar();
       this.game.addDummyEnemy();
+      this.pauseBtn.addEventListener("click", function () {
+        if (_this.pause) {
+          _this.pause = false;
+
+          _this.animate();
+        } else {
+          _this.pause = true;
+          cancelAnimationFrame(_this.frameId);
+        }
+      });
       this.animate();
     }
   }, {
@@ -925,18 +937,35 @@ document.addEventListener("DOMContentLoaded", function () {
   var canvas = document.getElementById("canvas");
   var startBtn = document.getElementById("start-btn");
   var restartBtn = document.getElementById("restart-btn");
+  var muteBtn = document.getElementById("mute-btn");
   var music = document.getElementById("music");
+  var controllers = document.getElementById("controllers");
   canvas.width = bound.width;
   canvas.height = bound.height;
   var gameView = new _game_view__WEBPACK_IMPORTED_MODULE_0__["GameView"](canvas);
   startBtn.classList.remove("hidden");
   startBtn.addEventListener("click", function () {
-    gameView.startGame(), startBtn.classList.add("hidden");
+    gameView.startGame();
+    startBtn.classList.add("hidden");
+    controllers.classList.remove("hidden");
     music.play();
   });
   restartBtn.addEventListener("click", function () {
     gameView.restart();
   });
+  muteBtn.addEventListener("click", function () {
+    if (music.paused) {
+      music.play();
+      console.log("unmute");
+      muteBtn.innerText = "Mute";
+    } else {
+      music.pause();
+      console.log("mute");
+      muteBtn.innerText = "Unmute";
+    }
+  });
+  window.muteBtn = muteBtn;
+  window.music = music;
 });
 
 /***/ }),

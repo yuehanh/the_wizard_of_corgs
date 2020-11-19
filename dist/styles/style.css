@@ -26,6 +26,7 @@ h1 {
 #text {
   border: 3px solid white;
   width: 100%;
+  margin-top: 50px;
 }
 
 p {
@@ -39,7 +40,18 @@ p {
   position: relative;
   width: 930px;
   height: 520px;
-  margin-bottom: 60px;
+}
+
+.game-controllers {
+  padding-top: 10px;
+  padding-bottom: 50px;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.game-controllers span {
+  padding: 10px;
 }
 #canvas,
 #background-canvas,
@@ -79,6 +91,9 @@ p {
   background: gold;
   box-shadow: 2px 3px white;
   transition: all 200ms ease-in-out;
+}
+
+#restart-btn {
   margin-top: 50px;
 }
 

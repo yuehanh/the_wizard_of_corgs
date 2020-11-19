@@ -14,6 +14,8 @@ export class GameView {
     this.gameOverMenu = document.getElementById("game-over");
     this.finalScore = document.getElementById("final-score");
     this.score = document.getElementById("score");
+    this.pauseBtn = document.getElementById("pause-btn");
+    this.pause = false;
     this.start();
   }
 
@@ -29,7 +31,15 @@ export class GameView {
     };
     this.game.addMainChar();
     this.game.addDummyEnemy();
-
+    this.pauseBtn.addEventListener("click", () => {
+      if (this.pause) {
+        this.pause = false;
+        this.animate();
+      } else {
+        this.pause = true;
+        cancelAnimationFrame(this.frameId);
+      }
+    });
     this.animate();
   }
 
