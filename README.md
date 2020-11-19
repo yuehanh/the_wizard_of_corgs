@@ -1,5 +1,8 @@
 # The Wizard of Corgs
 
+[![github-pages-icon](https://img.shields.io/badge/Hosted%20On-GitHub%20Pages-blue?)](https://yuehanh.github.io/the_wizard_of_corgs/)
+![javascript-icon](https://img.shields.io/badge/Built%20With-JavaScript-yellow)
+
 ## Background and Overview
 
 [The Wizard of Corgs Live Demo](https://yuehanh.github.io/the_wizard_of_corgs/)
