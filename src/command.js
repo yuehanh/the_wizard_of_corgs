@@ -125,8 +125,6 @@ export class Command {
       case "ULS":
       case "DRS":
         return "bSlash";
-      default:
-        console.log(this.directions.join());
     }
   }
 }

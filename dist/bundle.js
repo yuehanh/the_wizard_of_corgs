@@ -245,9 +245,6 @@ var Command = /*#__PURE__*/function () {
         case "ULS":
         case "DRS":
           return "bSlash";
-
-        default:
-          console.log(this.directions.join());
       }
     }
   }]);
