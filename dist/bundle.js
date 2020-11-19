@@ -948,10 +948,10 @@ document.addEventListener("DOMContentLoaded", function () {
     gameView.restart();
   });
   document.addEventListener("keydown", function (e) {
-    e.preventDefault();
-
     switch (e.key) {
       case "m":
+        e.preventDefault();
+
         if (music.paused) {
           music.play();
         } else {
@@ -962,7 +962,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       case "p":
       case " ":
-        debugger;
+        e.preventDefault();
         pauseBtn.innerText = gameView.toggleGame();
     }
   });

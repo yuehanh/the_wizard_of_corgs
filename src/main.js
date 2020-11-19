@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("keydown", (e) => {
-    e.preventDefault();
     switch (e.key) {
       case "m":
+        e.preventDefault();
         if (music.paused) {
           music.play();
         } else {
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "p":
       case " ":
-        debugger;
+        e.preventDefault();
         pauseBtn.innerText = gameView.toggleGame();
     }
   });
