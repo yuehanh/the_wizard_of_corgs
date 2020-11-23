@@ -368,7 +368,7 @@ var Enemy = /*#__PURE__*/function () {
 
       this.pos = Object(_util__WEBPACK_IMPORTED_MODULE_1__["rndEntryPoint"])(this.game, this);
       this.vel = this.targetPos.minus(this.pos);
-      this.vel.scale(1 / (this.vel.mag * 5));
+      this.vel.scale(1 / (this.vel.mag * (5 - this.level % 7 / 2)));
     }
   }, {
     key: "draw",
@@ -881,11 +881,11 @@ var HealthBar = /*#__PURE__*/function () {
   }, {
     key: "drawBSlash",
     value: function drawBSlash(ctx, x, y) {
-      var xStart = x;
+      var xStart = x + this.SIZE / 4;
       var yStart = y;
       ctx.beginPath();
       ctx.strokeStyle = "cyan";
-      ctx.moveTo(xStart + this.SIZE / 4, yStart);
+      ctx.moveTo(xStart, yStart);
       ctx.lineTo(xStart + this.SIZE / 2, yStart + this.SIZE);
       ctx.stroke();
     }

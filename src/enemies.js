@@ -26,7 +26,7 @@ export class Enemy {
     // this.pos = new Vector(40, 40);
     this.pos = rndEntryPoint(this.game, this);
     this.vel = this.targetPos.minus(this.pos);
-    this.vel.scale(1 / (this.vel.mag * 5));
+    this.vel.scale(1 / (this.vel.mag * (5 - (this.level % 7) / 2)));
   }
 
   draw(ctx, image, frame) {

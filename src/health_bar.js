@@ -76,11 +76,11 @@ export class HealthBar {
   }
 
   drawBSlash(ctx, x, y) {
-    const xStart = x;
+    const xStart = x + this.SIZE / 4;
     const yStart = y;
     ctx.beginPath();
     ctx.strokeStyle = "cyan";
-    ctx.moveTo(xStart + this.SIZE / 4, yStart);
+    ctx.moveTo(xStart, yStart);
     ctx.lineTo(xStart + this.SIZE / 2, yStart + this.SIZE);
     ctx.stroke();
   }
